@@ -34,6 +34,6 @@ An ultra-luxury, editorial real estate digital experience inspired by contempora
    ```
 2. Or run locally with Node.js:
    ```bash
-   node server.js
+   node scripts/local-server.js
    ```
    and navigate to `http://localhost:2001`.
