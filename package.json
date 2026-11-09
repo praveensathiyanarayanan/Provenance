@@ -1,0 +1,17 @@
+{
+  "name": "provenance-luxury-real-estate",
+  "version": "1.0.0",
+  "description": "PROVENANCE — Luxury Architectural Sanctuaries & Private Residences",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "keywords": [
+    "luxury-real-estate",
+    "architecture",
+    "minimalist",
+    "editorial-design"
+  ],
+  "author": "Praveen Sathiyanarayanan",
+  "license": "MIT"
+}

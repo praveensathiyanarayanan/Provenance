@@ -1,0 +1,10 @@
+node_modules/
+*.log
+assets/hero-scroll.gif
+check_exif.js
+check_file.js
+check_transcript.js
+list_uploads.js
+parse_gif.js
+.DS_Store
+Thumbs.db

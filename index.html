@@ -1,0 +1,1877 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PROVENANCE — Sovereign Estates & Architectural Sanctuaries</title>
+  
+  <!-- Google Fonts: Royal Typography (Cinzel & Cormorant Garamond & Outfit) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700;800;900&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,600&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Outfit"', '"Plus Jakarta Sans"', 'sans-serif'],
+            display: ['"Cinzel"', '"Cormorant Garamond"', 'serif'],
+            royal: ['"Cormorant Garamond"', '"Cinzel"', 'serif'],
+          },
+          colors: {
+            brand: {
+              dark: '#0e1116',
+              charcoal: '#171b22',
+              surface: '#20252e',
+              stone: '#f4f5f7',
+              accent: '#2563eb'
+            }
+          },
+          borderRadius: {
+            'none': '0px',
+            'sm': '12px',
+            DEFAULT: '12px',
+            'md': '12px',
+            'lg': '12px',
+            'xl': '12px',
+            '2xl': '12px',
+            '3xl': '12px',
+            '4xl': '12px',
+            'full': '9999px'
+          }
+        }
+      }
+    }
+  </script>
+  
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  
+  <!-- Custom Styles with cache-buster -->
+  <link rel="stylesheet" href="styles.css?v=50">
+  
+  <style>
+    /* =========================================================
+       UNIVERSAL & ROCK-SOLID HOVER EFFECTS FOR ALL BOX ELEMENTS
+       ========================================================= */
+    .box-hover-lift,
+    .partner-interactive-card,
+    .enclave-box,
+    .stat-box-interactive,
+    .testimonial-box,
+    .advisory-box-lift {
+      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s ease !important;
+      will-change: transform, box-shadow;
+      cursor: pointer;
+    }
+
+    .box-hover-lift:hover,
+    .stat-box-interactive:hover,
+    .enclave-box:hover,
+    .testimonial-box:hover,
+    .advisory-box-lift:hover {
+      transform: translateY(-8px) scale(1.02) !important;
+      box-shadow: 0 25px 50px -10px rgba(0, 0, 0, 0.28), 0 0 0 1.5px rgba(255, 255, 255, 0.35) !important;
+      z-index: 10;
+    }
+
+    .partner-interactive-card:hover {
+      transform: translateY(-10px) scale(1.025) !important;
+      box-shadow: 0 30px 65px -12px rgba(0, 0, 0, 0.55), 0 0 0 2.5px rgba(255, 255, 255, 0.4) !important;
+      z-index: 20;
+    }
+
+    .box-hover-lift img,
+    .partner-interactive-card .partner-main-img,
+    .enclave-box img {
+      transition: transform 0.65s cubic-bezier(0.16, 1, 0.3, 1) !important;
+    }
+
+    .box-hover-lift:hover img,
+    .partner-interactive-card:hover .partner-main-img,
+    .enclave-box:hover img {
+      transform: scale(1.08) !important;
+    }
+
+    .partner-interactive-card:hover .partner-gif-img {
+      opacity: 1 !important;
+      transform: scale(1.08) !important;
+    }
+
+    .partner-interactive-card:hover .partner-zoom-pill,
+    .box-hover-lift:hover .partner-zoom-pill {
+      opacity: 1 !important;
+      transform: translate(-50%, -50%) scale(1) !important;
+    }
+
+    .partner-interactive-card.gif-force-play .partner-gif-img {
+      opacity: 1 !important;
+    }
+
+    /* Tenor GIF Embed Container Styling - 12px Beveled Corners */
+    .tenor-box-container {
+      border-radius: 12px !important;
+      overflow: hidden;
+      box-shadow: 0 20px 45px -10px rgba(0, 0, 0, 0.35);
+    }
+
+    /* Lightbox styling - FLIP origin expansion handled via JavaScript */
+    #zoom-lightbox {
+      display: none !important;
+      opacity: 0 !important;
+      visibility: hidden !important;
+      pointer-events: none !important;
+      transition: opacity 0.35s ease, visibility 0.35s ease;
+    }
+    #zoom-lightbox.active {
+      display: flex !important;
+      opacity: 1 !important;
+      visibility: visible !important;
+      pointer-events: auto !important;
+    }
+    #zoom-lightbox.active #zoom-lightbox-backdrop {
+      pointer-events: auto !important;
+    }
+
+    #favorites-drawer.hidden {
+      display: none !important;
+      pointer-events: none !important;
+    }
+    #favorites-drawer.hidden #favorites-backdrop {
+      pointer-events: none !important;
+    }
+  </style>
+</head>
+<body class="tour-gate-locked dark-mode bg-[#080a0f] text-[#f1f5f9] selection:bg-white selection:text-black antialiased transition-colors duration-300">
+  <script>
+    // Immediate pre-render: Always scroll to top & apply 3-minute house tour cooldown
+    (function() {
+      try {
+        if ('scrollRestoration' in history) { history.scrollRestoration = 'manual'; }
+        window.scrollTo(0, 0);
+        var lastDismissed = localStorage.getItem('poperty_tour_cooldown_timestamp');
+        if (lastDismissed && (Date.now() - parseInt(lastDismissed, 10) < 3 * 60 * 1000)) {
+          document.body.classList.remove('tour-gate-locked');
+          var s = document.createElement('style');
+          s.id = 'tour-cooldown-style';
+          s.innerHTML = '#intro-tour-gateway { display: none !important; }';
+          document.head.appendChild(s);
+        }
+      } catch(e) {}
+    })();
+  </script>
+
+  <!-- IMMERSIVE BLUR POPUP GATEWAY: READY FOR A HOUSE TOUR -->
+  <div id="intro-tour-gateway" class="fixed inset-0 z-[200000] flex items-center justify-center p-4 sm:p-6 select-none" role="dialog" aria-modal="true" aria-labelledby="intro-gateway-title">
+    <!-- Deep luxury blur backdrop -->
+    <div id="intro-gateway-backdrop" class="absolute inset-0"></div>
+
+    <!-- Central Royal Popup Card with 12px Bevel -->
+    <div id="intro-gateway-card" class="relative max-w-lg w-full p-8 sm:p-11 z-10 flex flex-col items-center text-center">
+      
+      <!-- Top Badge / Pulse Beacon -->
+      <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-[12px] bg-white/10 border border-white/15 text-xs font-mono uppercase tracking-widest text-emerald-400 mb-6 shadow-inner">
+        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse shadow-[0_0_8px_rgba(52,211,153,0.9)]"></span>
+        <span>Exclusive Architectural Preview</span>
+      </div>
+
+      <!-- Main Headline: READY FOR A HOUSE TOUR -->
+      <h2 id="intro-gateway-title" class="text-3xl sm:text-4xl lg:text-[42px] leading-[1.08] font-bold font-display text-white tracking-tight uppercase mb-4 hero-title-shadow">
+        Ready for a<br/><span class="text-emerald-400">House Tour?</span>
+      </h2>
+
+      <!-- Refined Royal Subtext -->
+      <p class="text-sm sm:text-base text-zinc-300 font-sans leading-relaxed max-w-md mb-8">
+        Step inside an ultra-luxury modern sanctuary featuring 224-frame 60FPS scroll-driven cinematic walkthroughs, curated architecture, and private estate dossiers.
+      </p>
+
+      <!-- Primary Confirmation Button: Opens the Website (Highlighted Green CTA) -->
+      <button id="start-house-tour-btn" autofocus class="w-full sm:w-auto px-10 py-4 bg-emerald-500 hover:bg-emerald-400 active:scale-95 text-base font-extrabold text-black font-sans rounded-[12px] shadow-[0_10px_35px_rgba(16,185,129,0.5)] transition-all duration-300 flex items-center justify-center gap-3 group cursor-pointer hover:shadow-[0_15px_45px_rgba(52,211,153,0.7)]">
+        <span class="tracking-wide">Enter the House</span>
+        <div class="w-6 h-6 rounded-[6px] bg-black text-emerald-400 flex items-center justify-center group-hover:translate-x-1 transition-transform">
+          <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+        </div>
+      </button>
+
+      <!-- Subtext / Keyboard hint -->
+      <span class="text-[11px] font-mono text-zinc-500 mt-4 tracking-wider uppercase">
+        Press Enter or Click to Enter the House
+      </span>
+    </div>
+  </div>
+
+  <!-- LUXURY ARCHITECTURAL GRID BACKGROUND (Fixed beneath dark UI - Clean Grid) -->
+  <div id="ambient-mesh-canvas" class="fixed inset-0 pointer-events-none z-0 overflow-hidden" aria-hidden="true">
+    <div class="mesh-grid-pattern"></div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div id="toast-container"></div>
+
+  <!-- SAVED FAVORITES DRAWER (Hidden by default so it never blocks page clicks) -->
+  <div id="favorites-drawer" class="fixed inset-0 z-50 hidden pointer-events-none transition-opacity duration-300 opacity-0">
+    <div id="favorites-backdrop" class="absolute inset-0 bg-black/50 backdrop-blur-sm pointer-events-none"></div>
+    <div class="absolute right-0 top-0 bottom-0 w-full max-w-md bg-white shadow-2xl p-6 flex flex-col pointer-events-auto transform translate-x-full transition-transform duration-300 ease-out" id="favorites-panel">
+      <div class="flex items-center justify-between pb-4 border-b border-gray-100">
+        <div class="flex items-center gap-2">
+          <i data-lucide="bookmark" class="w-5 h-5 text-black"></i>
+          <h3 class="font-bold text-lg tracking-tight">Saved Estates (<span id="fav-count-header">0</span>)</h3>
+        </div>
+        <div class="flex items-center gap-2">
+          <button id="clear-all-favs" class="text-xs text-gray-400 hover:text-red-500 font-medium px-2 py-1 rounded transition-colors" title="Clear all saved">Clear All</button>
+          <button id="close-favorites" class="p-2 hover:bg-gray-100 rounded-full transition-colors">
+            <i data-lucide="x" class="w-5 h-5 text-gray-500"></i>
+          </button>
+        </div>
+      </div>
+      
+      <!-- Portfolio Value summary -->
+      <div id="favorites-summary" class="my-3 p-3 bg-gray-50 rounded-xl border border-gray-100 flex items-center justify-between text-xs font-medium text-gray-600 hidden">
+        <span>Combined Portfolio Value:</span>
+        <span id="fav-total-value" class="text-black font-bold text-sm">$0</span>
+      </div>
+
+      <div id="favorites-list" class="flex-1 overflow-y-auto py-2 space-y-3">
+        <!-- Rendered dynamically -->
+      </div>
+
+      <div class="pt-4 border-t border-gray-100 space-y-2">
+        <button id="inquire-all-saved" class="w-full py-3.5 bg-black hover:bg-zinc-800 text-white font-medium rounded-full text-sm transition-colors flex items-center justify-center gap-2 shadow-md">
+          Inquire About Shortlist <i data-lucide="arrow-right" class="w-4 h-4"></i>
+        </button>
+        <button onclick="window.print()" class="w-full py-2.5 bg-gray-100 hover:bg-gray-200 text-gray-800 font-medium rounded-full text-xs transition-colors flex items-center justify-center gap-2">
+          <i data-lucide="printer" class="w-3.5 h-3.5"></i>
+          Export Shortlist Portfolio (PDF)
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- INTERACTIVE MORTGAGE & FINANCING MODAL -->
+  <div id="calculator-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4">
+    <div id="calc-backdrop" class="absolute inset-0 modal-backdrop-blur"></div>
+    <div class="relative bg-white rounded-3xl max-w-xl w-full shadow-2xl z-10 animate-modal-enter p-6 sm:p-8">
+      <button id="close-calc-btn" class="absolute top-6 right-6 p-2 bg-gray-100 hover:bg-gray-200 rounded-full transition-colors">
+        <i data-lucide="x" class="w-5 h-5 text-gray-700"></i>
+      </button>
+
+      <div class="flex items-center gap-2 mb-1">
+        <i data-lucide="calculator" class="w-5 h-5 text-black"></i>
+        <span class="text-xs font-bold uppercase tracking-widest text-gray-400">Interactive Financing Estimator</span>
+      </div>
+      <h3 class="text-2xl font-bold font-display text-gray-900 mb-4" id="calc-title">Investment & Mortgage Breakdown</h3>
+
+      <div class="space-y-4">
+        <!-- Live Monthly Result Box -->
+        <div class="p-5 bg-black text-white rounded-2xl flex items-center justify-between">
+          <div>
+            <span class="text-xs text-zinc-400 block font-medium">Estimated Total Monthly Outlay</span>
+            <span class="text-3xl font-bold font-display tracking-tight text-white mt-0.5 block" id="calc-monthly-total">$2,642</span>
+            <span class="text-[11px] text-zinc-400 mt-1 block">Includes Principal, Interest & Est. Escrow</span>
+          </div>
+          <div class="text-right text-xs space-y-1 text-zinc-300">
+            <div>Principal & Int: <strong class="text-white" id="calc-pi">$2,275</strong></div>
+            <div>Taxes: <strong class="text-white" id="calc-taxes">$267</strong></div>
+            <div>Insurance: <strong class="text-white" id="calc-ins">$100</strong></div>
+          </div>
+        </div>
+
+        <!-- Property Price Slider -->
+        <div>
+          <div class="flex justify-between text-xs font-bold text-gray-700 mb-1">
+            <span>Property Price:</span>
+            <span id="calc-price-display" class="font-display text-sm text-black">$450,000</span>
+          </div>
+          <input type="range" id="calc-price-slider" min="200000" max="5000000" step="25000" value="450000" class="w-full">
+        </div>
+
+        <!-- Down Payment Slider -->
+        <div>
+          <div class="flex justify-between text-xs font-bold text-gray-700 mb-1">
+            <span>Down Payment:</span>
+            <span id="calc-down-display" class="font-display text-sm text-black">20% ($90,000)</span>
+          </div>
+          <input type="range" id="calc-down-slider" min="5" max="50" step="5" value="20" class="w-full">
+        </div>
+
+        <!-- Interest Rate & Loan Term -->
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <div class="flex justify-between text-xs font-bold text-gray-700 mb-1">
+              <span>Interest Rate:</span>
+              <span id="calc-rate-display" class="font-display text-sm text-black">6.5%</span>
+            </div>
+            <input type="range" id="calc-rate-slider" min="3.5" max="9.5" step="0.25" value="6.5" class="w-full">
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-gray-700 mb-1.5">Loan Term</label>
+            <select id="calc-term-select" class="w-full p-2.5 rounded-xl border border-gray-200 text-xs font-semibold focus:outline-none focus:border-black bg-white">
+              <option value="30">30 Years Fixed</option>
+              <option value="15">15 Years Fixed</option>
+              <option value="7">7/1 ARM (Adjustable)</option>
+            </select>
+          </div>
+        </div>
+
+        <button onclick="openTourModal('Financing Consultation'); document.getElementById('calculator-modal').classList.add('hidden')" class="w-full py-3 bg-black hover:bg-zinc-800 text-white rounded-xl text-xs font-semibold transition-colors mt-2">
+          Request Private Lending Pre-Approval
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- INTERACTIVE NEIGHBORHOOD GUIDE MODAL -->
+  <div id="neighborhood-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4">
+    <div id="neighborhood-backdrop" class="absolute inset-0 modal-backdrop-blur"></div>
+    <div class="relative bg-white rounded-3xl max-w-xl w-full shadow-2xl z-10 animate-modal-enter p-6 sm:p-8">
+      <button id="close-neighborhood-btn" class="absolute top-6 right-6 p-2 bg-gray-100 hover:bg-gray-200 rounded-full transition-colors">
+        <i data-lucide="x" class="w-5 h-5 text-gray-700"></i>
+      </button>
+
+      <div class="flex items-center gap-2 mb-1">
+        <i data-lucide="compass" class="w-5 h-5 text-black"></i>
+        <span class="text-xs font-bold uppercase tracking-widest text-gray-400">Neighborhood Dossier</span>
+      </div>
+      <h3 class="text-2xl font-bold font-display text-gray-900" id="neighborhood-title">Miami, FL — Cultural & Waterfront Core</h3>
+      <p class="text-xs text-gray-500 mt-1 mb-5">Curated proximity indices and lifestyle convenience scores.</p>
+
+      <!-- Scores Grid -->
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 text-center mb-6">
+        <div class="p-3 bg-gray-50 rounded-2xl border border-gray-100">
+          <span class="text-2xl font-bold font-display text-black" id="score-walk">96</span>
+          <span class="text-[10px] text-gray-400 block uppercase font-bold mt-1">Walk Score</span>
+        </div>
+        <div class="p-3 bg-gray-50 rounded-2xl border border-gray-100">
+          <span class="text-2xl font-bold font-display text-black" id="score-transit">92</span>
+          <span class="text-[10px] text-gray-400 block uppercase font-bold mt-1">Transit Index</span>
+        </div>
+        <div class="p-3 bg-gray-50 rounded-2xl border border-gray-100">
+          <span class="text-2xl font-bold font-display text-black" id="score-airport">14m</span>
+          <span class="text-[10px] text-gray-400 block uppercase font-bold mt-1">Private Aviation</span>
+        </div>
+        <div class="p-3 bg-gray-50 rounded-2xl border border-gray-100">
+          <span class="text-2xl font-bold font-display text-black" id="score-marina">8m</span>
+          <span class="text-[10px] text-gray-400 block uppercase font-bold mt-1">Deepwater Marina</span>
+        </div>
+      </div>
+
+      <!-- Highlights -->
+      <div class="space-y-3">
+        <h4 class="text-xs font-bold uppercase tracking-wider text-gray-900">Curated Local Attractions</h4>
+        <div class="space-y-2 text-xs text-gray-600">
+          <div class="flex items-start gap-2.5 p-2.5 rounded-xl bg-gray-50 border border-gray-100">
+            <i data-lucide="utensils" class="w-4 h-4 text-black shrink-0 mt-0.5"></i>
+            <div>
+              <strong class="text-gray-900 block font-semibold">Michelin-Starred Dining (9 Venues)</strong>
+              <span>L'Atelier de Joël Robuchon, Cote Miami, and Sexy Fish within walking distance.</span>
+            </div>
+          </div>
+          <div class="flex items-start gap-2.5 p-2.5 rounded-xl bg-gray-50 border border-gray-100">
+            <i data-lucide="anchor" class="w-4 h-4 text-black shrink-0 mt-0.5"></i>
+            <div>
+              <strong class="text-gray-900 block font-semibold">Marina & Yachting Access</strong>
+              <span>Miamarina at Bayside accommodates vessels up to 200ft with full private concierge.</span>
+            </div>
+          </div>
+          <div class="flex items-start gap-2.5 p-2.5 rounded-xl bg-gray-50 border border-gray-100">
+            <i data-lucide="palette" class="w-4 h-4 text-black shrink-0 mt-0.5"></i>
+            <div>
+              <strong class="text-gray-900 block font-semibold">Arts & Cultural District</strong>
+              <span>Direct pedestrian connection to the Frost Science Museum and PAMM.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="mt-6 pt-4 border-t border-gray-100 flex items-center justify-between">
+        <span class="text-xs text-gray-400">Request complete neighborhood guide package</span>
+        <button onclick="showToast('Guide sent to your email.'); document.getElementById('neighborhood-modal').classList.add('hidden')" class="px-5 py-2.5 bg-black hover:bg-zinc-800 text-white rounded-xl text-xs font-medium transition-colors">
+          Download PDF Guide
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- FULL-SCREEN ARCHITECTURAL iOS MAXIMIZE & ZOOM LIGHTBOX (Non-blocking, GPU Accelerated) -->
+  <div id="zoom-lightbox" class="fixed inset-0 z-[100000] hidden pointer-events-none select-none">
+    <!-- iOS Ambient Frosted Blur Scrim -->
+    <div id="zoom-lightbox-backdrop" class="fixed inset-0 bg-black/85 backdrop-blur-2xl pointer-events-none transition-opacity duration-300"></div>
+
+    <!-- iOS Circular Frosted Close Button (Top Right) -->
+    <button id="close-zoom-lightbox" class="ios-close-btn" title="Close (Esc or swipe down)">
+      <i data-lucide="x" class="w-5 h-5"></i>
+    </button>
+
+    <!-- iOS Live Motion Badge (Top Left) -->
+    <button id="zoom-toggle-motion-btn" class="ios-live-badge" title="Toggle Motion GIF vs Still Photo">
+      <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+      <span id="zoom-motion-btn-text">LIVE PHOTO</span>
+    </button>
+
+    <!-- Prev / Next iOS Navigation Arrows -->
+    <button id="lightbox-prev-btn" class="ios-nav-arrow prev" title="Previous Estate (Left Arrow)">
+      <i data-lucide="chevron-left" class="w-6 h-6"></i>
+    </button>
+    <button id="lightbox-next-btn" class="ios-nav-arrow next" title="Next Estate (Right Arrow)">
+      <i data-lucide="chevron-right" class="w-6 h-6"></i>
+    </button>
+
+    <!-- The iOS Maximizing Image Element -->
+    <div class="zoom-image-wrapper" id="zoom-wrapper">
+      <!-- iOS Drag Indicator Pill -->
+      <div class="ios-drag-handle"></div>
+      <img id="zoom-lightbox-img" src="" alt="Architectural Zoom Detail" draggable="false">
+    </div>
+
+    <!-- Bottom Architectural Capsule Card -->
+    <div id="lightbox-caption-capsule" class="ios-caption-card">
+      <div>
+        <strong id="lightbox-caption-title" class="font-bold text-white text-sm">Sanctuary Great Hall</strong>
+        <span id="lightbox-caption-tag" class="text-white/60 text-xs ml-2">● Double-Height Atrium</span>
+      </div>
+      <div class="h-4 w-[1px] bg-white/20 hidden sm:block"></div>
+      <span class="text-white/50 text-[11px] hidden sm:inline">Swipe down or tap background to dismiss</span>
+      <button id="lightbox-inquire-btn" onclick="openTourModal('Architectural Study Inquiry')" class="px-4 py-1.5 bg-white text-black font-bold text-xs rounded-full hover:bg-zinc-200 active:scale-95 transition-all shadow-md">
+        Inquire
+      </button>
+    </div>
+  </div>
+
+  <!-- MULTI-TAB INTERACTIVE PROPERTY DETAIL MODAL -->
+  <div id="property-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-3 sm:p-6 lg:p-10">
+    <div id="modal-backdrop" class="absolute inset-0 modal-backdrop-blur"></div>
+    <div class="relative bg-white rounded-3xl max-w-4xl w-full max-h-[92vh] overflow-y-auto shadow-2xl z-10 animate-modal-enter p-6 sm:p-8">
+      <button id="close-modal-btn" class="absolute top-6 right-6 p-2.5 bg-gray-100 hover:bg-gray-200 rounded-full transition-colors z-30">
+        <i data-lucide="x" class="w-5 h-5 text-gray-700"></i>
+      </button>
+
+      <div id="modal-content">
+        <!-- Injected via JavaScript with interactive tab switcher -->
+      </div>
+    </div>
+  </div>
+
+  <!-- SCHEDULE TOUR MODAL -->
+  <div id="tour-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4">
+    <div id="tour-backdrop" class="absolute inset-0 modal-backdrop-blur"></div>
+    <div class="relative bg-white rounded-3xl max-w-lg w-full shadow-2xl z-10 animate-modal-enter p-6 sm:p-8">
+      <button id="close-tour-btn" class="absolute top-6 right-6 p-2 bg-gray-100 hover:bg-gray-200 rounded-full transition-colors">
+        <i data-lucide="x" class="w-5 h-5 text-gray-700"></i>
+      </button>
+      
+      <div class="mb-6">
+        <span class="text-xs uppercase tracking-widest font-semibold text-gray-400">VIP Showing</span>
+        <h3 class="text-2xl font-bold tracking-tight text-gray-900 mt-1">Schedule a Private Viewing</h3>
+        <p class="text-sm text-gray-500 mt-1" id="tour-property-title">Experience this architectural sanctuary with our senior advisory team.</p>
+      </div>
+
+      <form id="tour-form" class="space-y-4">
+        <div>
+          <label class="block text-xs font-semibold text-gray-600 uppercase mb-1.5">Full Name</label>
+          <input type="text" required placeholder="Marcus Vance" class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:border-black text-sm">
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-semibold text-gray-600 uppercase mb-1.5">Email Address</label>
+            <input type="email" required placeholder="m.vance@example.com" class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:border-black text-sm">
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-gray-600 uppercase mb-1.5">Phone Number</label>
+            <input type="tel" required placeholder="+1 (305) 555-0192" class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:border-black text-sm">
+          </div>
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-semibold text-gray-600 uppercase mb-1.5">Preferred Date</label>
+            <input type="date" required class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:border-black text-sm">
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-gray-600 uppercase mb-1.5">Tour Type</label>
+            <select class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:border-black text-sm bg-white">
+              <option>In-Person VIP Showing</option>
+              <option>Live Guided 4K Video Tour</option>
+              <option>Architectural Consultation</option>
+            </select>
+          </div>
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-gray-600 uppercase mb-1.5">Special Requests or Notes</label>
+          <textarea rows="2" placeholder="e.g. Inquiring regarding private financing and acquisition timeline" class="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:outline-none focus:border-black text-sm"></textarea>
+        </div>
+        <button type="submit" class="w-full py-3.5 bg-black hover:bg-zinc-800 text-white font-medium rounded-xl text-sm transition-colors mt-2 shadow-lg">
+          Confirm Appointment Request
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- STATIC / FIXED TOP NAVIGATION BAR (Always pinned & stationary at the top of the viewport) -->
+  <header id="site-static-nav" class="fixed top-0 inset-x-0 z-[9999] transition-all duration-300">
+    <nav class="flex items-center justify-between px-6 sm:px-10 lg:px-14 py-4 sm:py-5">
+      
+      <!-- Brand Logo (Clean Uppercase Imperial Serif) -->
+      <a href="#" id="brand-logo-btn" class="group flex items-center cursor-pointer transition-transform hover:scale-105 active:scale-95" title="PROVENANCE - Return to Top">
+        <span class="text-2xl sm:text-3xl font-semibold tracking-wider text-white uppercase drop-shadow-md" style="font-family: 'Cinzel', 'Cormorant Garamond', serif; letter-spacing: 0.12em;">PROVENANCE</span>
+      </a>
+
+      <!-- Desktop Navigation Links (Pill Capsule matching reference) -->
+      <div class="hidden md:flex items-center gap-6 text-[13px] font-medium tracking-wide text-zinc-300 bg-black/75 backdrop-blur-md px-6 py-2 rounded-full border border-white/10 shadow-lg" id="desktop-nav-links">
+        <a href="#about-section" class="nav-link-interactive hover:text-white transition-colors" data-section="about-section">About Us</a>
+        <a href="#cinematic-experience" class="nav-link-interactive hover:text-white transition-colors flex items-center" data-section="cinematic-experience">
+          <span class="text-zinc-400 mr-1.5">•</span>Experience
+        </a>
+        <a href="#featured-listings" class="nav-link-interactive hover:text-white transition-colors" data-section="featured-listings">Featured</a>
+        <a href="#testimonials" class="nav-link-interactive hover:text-white transition-colors" data-section="testimonials">Testimonial</a>
+        <a href="#advisory" class="nav-link-interactive hover:text-white transition-colors" data-section="advisory">Advisory</a>
+      </div>
+
+      <!-- Right Action Buttons (Matching Screenshot) -->
+      <div class="flex items-center gap-2.5">
+        <!-- Theme Switcher Button -->
+        <button id="theme-toggle-btn" class="w-8 h-8 rounded-full bg-black/60 hover:bg-white/10 active:scale-95 backdrop-blur-md border border-white/15 transition-all text-white flex items-center justify-center shadow-md cursor-pointer" title="Toggle Theme">
+          <i data-lucide="sun" class="w-3.5 h-3.5" id="theme-icon"></i>
+        </button>
+
+        <!-- Favorite Shortlist Button -->
+        <button id="open-favorites-btn" class="relative w-8 h-8 rounded-full bg-black/60 hover:bg-white/10 active:scale-95 backdrop-blur-md border border-white/15 transition-all text-white flex items-center justify-center shadow-md cursor-pointer" title="Saved Shortlist">
+          <i data-lucide="heart" class="w-3.5 h-3.5"></i>
+          <span id="fav-badge" class="absolute -top-1 -right-1 w-3.5 h-3.5 bg-white text-black text-[9px] font-bold rounded-full flex items-center justify-center hidden">0</span>
+        </button>
+
+        <!-- Browse Properties Pill CTA -->
+        <a href="#featured-listings" id="nav-browse-btn" class="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-black/60 hover:bg-white/10 border border-white/15 text-white text-xs font-medium backdrop-blur-md shadow-md hover:scale-105 active:scale-95 transition-all cursor-pointer">
+          <span>Browse Properties</span>
+          <i data-lucide="arrow-up-right" class="w-3.5 h-3.5 text-zinc-300"></i>
+        </a>
+
+        <!-- Mobile Menu Toggle -->
+        <button id="mobile-menu-toggle" class="md:hidden p-2 rounded-full bg-black/60 hover:bg-white/10 active:scale-95 text-white transition-all border border-white/15">
+          <i data-lucide="menu" class="w-4 h-4"></i>
+        </button>
+      </div>
+    </nav>
+
+    <!-- MOBILE NAV DROPDOWN -->
+    <div id="mobile-menu" class="hidden md:hidden relative px-6 py-4 mx-6 mb-4 rounded-[12px] bg-black/90 backdrop-blur-xl border border-white/15 space-y-3 text-sm shadow-2xl">
+      <a href="#about-section" class="mobile-nav-link block py-2 px-3 rounded-[10px] text-zinc-200 hover:text-white hover:bg-white/10 transition-colors">About Us</a>
+      <a href="#cinematic-experience" class="mobile-nav-link block py-2 px-3 rounded-[10px] text-emerald-400 font-medium hover:text-white hover:bg-white/10 transition-colors">Cinematic Experience</a>
+      <a href="#featured-listings" class="mobile-nav-link block py-2 px-3 rounded-[10px] text-zinc-200 hover:text-white hover:bg-white/10 transition-colors">Featured Properties</a>
+      <a href="#testimonials" class="mobile-nav-link block py-2 px-3 rounded-[10px] text-zinc-200 hover:text-white hover:bg-white/10 transition-colors">Client Testimonials</a>
+      <a href="#advisory" class="mobile-nav-link block py-2 px-3 rounded-[10px] text-zinc-200 hover:text-white hover:bg-white/10 transition-colors">Advisory & Concierge</a>
+    </div>
+  </header>
+
+  <!-- iOS PAGE CONTENT WRAPPER (Scales back with 3D depth during iOS card maximize) -->
+  <div id="page-content-wrapper" class="ios-page-content relative z-10">
+
+    <!-- HERO SCROLL TRACK (Slow, majestic, cinematographic scroll runway - reduced speed) -->
+    <div id="hero-scroll-track" class="relative" style="height: 385vh;">
+      <div class="sticky top-0 h-screen w-full flex flex-col justify-end overflow-hidden">
+        <div id="hero-frame-container" class="relative overflow-hidden w-full h-full flex flex-col justify-end text-white bg-[#080a0f]">
+          
+          <!-- HERO CANVAS BACKGROUND (Scroll-Driven Frame Scrubbing with Seamless Dark Fade) -->
+          <div class="absolute inset-0 z-0 overflow-hidden bg-[#080a0f]">
+            <canvas id="hero-scroll-canvas" class="w-full h-full object-cover block"></canvas>
+            <!-- Fallback first frame image for instant initial paint -->
+            <img 
+              id="hero-bg-image"
+              src="assets/hero-frames/f_001.jpg?v=3" 
+              alt="Luxury Architectural Modern Farmhouse Walkthrough" 
+              class="absolute inset-0 w-full h-full object-cover transition-opacity duration-500 pointer-events-none"
+            />
+
+            <!-- RETRO-LUXURY NEAT NOISE & HALFTONE OVERLAY -->
+            <div id="hero-halftone-noise-layer" class="pointer-events-none absolute inset-0 z-[5] overflow-hidden" aria-hidden="true">
+              <div class="hero-halftone-pattern"></div>
+              <div class="hero-noise-texture"></div>
+            </div>
+
+            <!-- DARK GRADIENT FADE TRANSITION (Spans the bottom 52% of the hero starting from the driveway paver line) -->
+            <div 
+              id="hero-dark-gradient" 
+              class="pointer-events-none absolute inset-x-0 bottom-0 z-10"
+            ></div>
+          </div>
+
+          <!-- FLOATING TOP HUD (Hidden to match user reference) -->
+          <div id="hero-hud-controls" class="hidden absolute top-[5.25rem] sm:top-[5.5rem] right-6 sm:right-10 lg:right-14 z-20 items-center gap-2.5">
+            <div class="px-4 py-2 rounded-full text-xs font-mono text-white/95 font-medium shadow-xl flex items-center gap-2 bg-[#0c121d]/90 backdrop-blur-md border border-white/15">
+              <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse shadow-[0_0_8px_rgba(52,211,153,0.9)]"></span>
+              <span id="hero-frame-counter">Frame 1 / 224 • 01 Front Facade • Dusk Illumination</span>
+            </div>
+            <button id="hero-play-toggle" class="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-white hover:bg-zinc-100 text-zinc-950 shadow-xl active:scale-95 transition-all cursor-pointer flex items-center justify-center shrink-0" title="Toggle Auto-Play Walkthrough">
+              <i data-lucide="play" class="w-3.5 h-3.5 text-zinc-950 ml-0.5" id="hero-play-icon"></i>
+            </button>
+          </div>
+
+          <!-- HERO BOTTOM CONTAINER: Headline on the Left, Explore Search Menu on the Right (Positioned to Cover Star) -->
+          <div class="relative z-20 px-6 sm:px-10 lg:px-14 pb-8 sm:pb-12 flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6 w-full">
+            
+            <!-- LEFT: HERO HEADLINE CONTENT (Bigger, High-Impact Editorial Typography) -->
+            <div class="max-w-2xl xl:max-w-3xl 2xl:max-w-4xl">
+              <h1 class="text-5xl sm:text-6xl lg:text-7xl xl:text-[76px] 2xl:text-[88px] leading-[1.02] font-bold font-display tracking-tight text-white mb-5 sm:mb-6 hero-title-shadow">
+                Discover Your Perfect<br/>Property In Your City.
+              </h1>
+              <p class="text-lg sm:text-xl lg:text-2xl text-white/95 font-medium max-w-2xl leading-relaxed hero-sub-shadow">
+                Exclusive listings, competitive prices, and expert guidance—all in one place.
+              </p>
+            </div>
+
+          <!-- RIGHT: FLOATING FAST SEARCH BAR (Elevated higher and scaled larger) -->
+          <div id="hero-search-wrapper" class="w-full lg:w-auto shrink-0 z-30 lg:mr-2 lg:mb-28 xl:mb-36 2xl:mb-40">
+            <div id="hero-search-capsule" class="rounded-[12px] p-3.5 sm:p-4 lg:p-4.5 shadow-2xl w-full lg:w-auto border border-white/25">
+              <form id="hero-search-form" class="flex flex-col sm:flex-row items-center gap-3 sm:gap-4">
+                
+                <div class="flex items-center gap-3.5 px-4 py-2.5 sm:py-3 w-full sm:w-auto border-b sm:border-b-0 sm:border-r border-white/15">
+                  <i data-lucide="map-pin" class="w-5 h-5 text-zinc-300 shrink-0"></i>
+                  <div class="text-left min-w-[160px] lg:min-w-[190px]">
+                    <span class="block text-xs sm:text-sm font-bold uppercase tracking-wider text-zinc-400">Location</span>
+                    <input type="text" id="hero-location-input" placeholder="Miami, Brickell, FL" class="bg-transparent text-base sm:text-lg font-semibold text-white focus:outline-none w-full placeholder-zinc-500">
+                  </div>
+                </div>
+
+                <div class="flex items-center gap-3.5 px-4 py-2.5 sm:py-3 w-full sm:w-auto border-b sm:border-b-0 sm:border-r border-white/15">
+                  <i data-lucide="home" class="w-5 h-5 text-zinc-300 shrink-0"></i>
+                  <div class="text-left min-w-[170px] lg:min-w-[200px]">
+                    <span class="block text-xs sm:text-sm font-bold uppercase tracking-wider text-zinc-400">Type</span>
+                    <select id="hero-type-input" class="bg-transparent text-base sm:text-lg font-semibold text-white focus:outline-none w-full cursor-pointer">
+                      <option value="all" class="bg-[#121622] text-white">All Properties (6)</option>
+                      <option value="villas" class="bg-[#121622] text-white">Villas (2)</option>
+                      <option value="commercial" class="bg-[#121622] text-white">Commercial (1)</option>
+                      <option value="residential" class="bg-[#121622] text-white">Residential (2)</option>
+                      <option value="penthouses" class="bg-[#121622] text-white">Penthouses (1)</option>
+                    </select>
+                  </div>
+                </div>
+
+                <button type="submit" class="w-full sm:w-auto px-8 sm:px-10 py-3.5 sm:py-4 bg-white text-zinc-950 hover:bg-zinc-200 rounded-[12px] text-base sm:text-lg font-bold transition-all flex items-center justify-center gap-3 shadow-xl cursor-pointer hover:scale-105 active:scale-95">
+                  <i data-lucide="search" class="w-5 h-5 text-zinc-950"></i>
+                  <span>Explore</span>
+                </button>
+              </form>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+
+  <!-- MAIN CONTENT CONTAINER -->
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 space-y-12 sm:space-y-16">
+
+    <!-- ==========================================
+         SECTION 1: YOUR TRUSTED PARTNER IN REAL ESTATE
+         (Exact asymmetric layout + Interactive Hotspots & Day/Dusk Mode)
+         ========================================== -->
+    <section id="about-section" class="scroll-mt-10">
+      
+      <!-- Section Title -->
+      <div class="mb-8 lg:mb-12 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+        <div>
+          <h2 class="text-3xl sm:text-4xl lg:text-[44px] font-bold tracking-tight text-gray-950 font-display">
+            Your Trusted Partner in<br class="hidden sm:inline" /> Real Estate
+          </h2>
+        </div>
+        <p class="text-xs text-gray-400 max-w-xs font-mono uppercase tracking-wider">
+          • Hover any architectural study to inspect spatial details and estate specifications.
+        </p>
+      </div>
+
+      <!-- Asymmetric Grid Container -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-stretch">
+        
+        <!-- LEFT LARGE CARD: Expansive Luxury Estate (Clean Image + Rich On-Hover Details) -->
+        <div class="lg:col-span-5 flex flex-col">
+          <div class="partner-interactive-card group w-full h-[480px] sm:h-[580px] lg:h-full min-h-[500px]" id="partner-card-1" onclick="openZoomLightbox(0, this)">
+            
+            <!-- Base Architectural Image -->
+            <img 
+              id="study-image"
+              src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1400&q=85" 
+              alt="The Turner Classical Sanctuary" 
+              class="partner-main-img card-media-img filter brightness-[0.94] transition-transform duration-700 group-hover:scale-105"
+            />
+
+            <!-- Permanent Ambient Dark Bottom Vignette -->
+            <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-black/10 pointer-events-none z-10"></div>
+
+            <!-- Static Badge (Visible before hover) -->
+            <div class="partner-static-badge flex items-end justify-between text-white pointer-events-none">
+              <div>
+                <span class="text-[11px] font-mono uppercase tracking-wider text-emerald-400 font-semibold block mb-0.5">
+                  Private Architectural Study
+                </span>
+                <h3 class="text-xl sm:text-2xl font-bold font-display text-white tracking-tight">
+                  The Turner Living Pavilion
+                </h3>
+                <p class="text-xs text-zinc-300 font-light mt-0.5">East Hampton, NY • Oceanfront Sanctuary</p>
+              </div>
+              <span class="px-3 py-1.5 rounded-full bg-black/60 backdrop-blur-md text-xs font-medium text-white flex items-center gap-1.5 border border-white/15 shadow-lg">
+                <i data-lucide="info" class="w-3.5 h-3.5 text-emerald-400"></i>
+                <span>Hover for Details</span>
+              </span>
+            </div>
+
+            <!-- ON HOVER: Rich Architectural Details Overlay -->
+            <div class="partner-hover-overlay">
+              <div class="space-y-3.5">
+                <div class="flex items-center justify-between">
+                  <span class="text-[11px] font-mono uppercase tracking-widest text-emerald-400 font-bold flex items-center gap-1.5">
+                    <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                    Estate Specifications
+                  </span>
+                  <span class="text-[10px] font-mono text-zinc-300 px-2 py-0.5 rounded bg-white/10 border border-white/10">
+                    Off-Market Reserve
+                  </span>
+                </div>
+
+                <div>
+                  <h3 class="text-2xl sm:text-3xl font-bold font-display text-white tracking-tight">
+                    The Turner Living Pavilion
+                  </h3>
+                  <p class="text-xs text-emerald-300/90 font-mono mt-0.5">
+                    East Hampton, NY • Classical Neo-Colonial Revival
+                  </p>
+                </div>
+
+                <!-- 4-Stat Architectural Matrix -->
+                <div class="grid grid-cols-4 gap-2 py-3 border-y border-white/15 text-center">
+                  <div class="p-2 rounded-lg bg-white/10">
+                    <span class="block text-sm font-bold text-white">9,450</span>
+                    <span class="text-[10px] text-zinc-400 uppercase font-mono">Sq. Ft.</span>
+                  </div>
+                  <div class="p-2 rounded-lg bg-white/10">
+                    <span class="block text-sm font-bold text-white">6</span>
+                    <span class="text-[10px] text-zinc-400 uppercase font-mono">Suites</span>
+                  </div>
+                  <div class="p-2 rounded-lg bg-white/10">
+                    <span class="block text-sm font-bold text-white">8</span>
+                    <span class="text-[10px] text-zinc-400 uppercase font-mono">Baths</span>
+                  </div>
+                  <div class="p-2 rounded-lg bg-white/10">
+                    <span class="block text-sm font-bold text-emerald-400">$18.7M</span>
+                    <span class="text-[10px] text-zinc-400 uppercase font-mono">Valuation</span>
+                  </div>
+                </div>
+
+                <!-- Architectural Highlights -->
+                <div class="text-xs text-zinc-200 leading-relaxed space-y-1.5">
+                  <p class="flex items-start gap-2">
+                    <i data-lucide="check" class="w-3.5 h-3.5 text-emerald-400 shrink-0 mt-0.5"></i>
+                    <span>Fluted Ionic Colonnades & Dual Symmetrical Dormers with 12ft Ceilings</span>
+                  </p>
+                  <p class="flex items-start gap-2">
+                    <i data-lucide="check" class="w-3.5 h-3.5 text-emerald-400 shrink-0 mt-0.5"></i>
+                    <span>Bookmatched Italian Roman Vein-Cut Travertine with Hydronic Heated Floors</span>
+                  </p>
+                  <p class="flex items-start gap-2">
+                    <i data-lucide="check" class="w-3.5 h-3.5 text-emerald-400 shrink-0 mt-0.5"></i>
+                    <span>Hand-Troweled Venetian Marmorino Lime Plaster & Triple Acoustic Glazing</span>
+                  </p>
+                </div>
+
+                <div class="flex items-center justify-between pt-2">
+                  <a href="#advisory" onclick="event.stopPropagation()" class="px-4 py-2 rounded-full bg-emerald-500 hover:bg-emerald-400 text-black text-xs font-bold transition-all shadow-lg flex items-center gap-1.5">
+                    <span>Enquire About Estate</span>
+                    <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+                  </a>
+                  <span class="text-xs text-zinc-300 font-mono flex items-center gap-1">
+                    <i data-lucide="maximize-2" class="w-3 h-3 text-white"></i> Click for 4K Zoom
+                  </span>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- RIGHT COLUMN: Dual Architecture Cards + Story & Tagline -->
+        <div class="lg:col-span-7 flex flex-col justify-between space-y-8">
+          
+          <!-- TOP ROW: Two Rounded Architectural Cards Side-by-Side (Clean Images + Hover Details) -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
+            
+            <!-- Subcard 1: Brutalist Modern Concrete Villa -->
+            <div class="partner-interactive-card group relative h-64 sm:h-72" id="partner-card-2" onclick="openZoomLightbox(1, this)">
+              <img 
+                src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=800&q=85" 
+                alt="Brutalist Contemporary Villa" 
+                class="partner-main-img card-media-img filter brightness-95 transition-transform duration-700 group-hover:scale-105"
+              />
+
+              <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent z-10 pointer-events-none"></div>
+
+              <!-- Static Bottom Badge -->
+              <div class="partner-static-badge text-white pointer-events-none">
+                <span class="text-[10px] font-mono uppercase tracking-wider text-emerald-400">Brutalist Villa</span>
+                <p class="text-base font-bold truncate">Monolith Terraces</p>
+                <p class="text-xs text-zinc-300">Hollywood Hills • 8,200 Sq Ft</p>
+              </div>
+
+              <!-- On Hover: Details Overlay -->
+              <div class="partner-hover-overlay p-5">
+                <div class="space-y-2">
+                  <div class="flex items-center justify-between">
+                    <span class="text-[10px] font-mono uppercase text-emerald-400 font-bold">Monolith Terraces</span>
+                    <span class="text-[10px] font-mono text-zinc-300">$14.2M</span>
+                  </div>
+                  <h4 class="text-base font-bold font-display text-white">Warm Brutalist Architectural Villa</h4>
+                  <p class="text-xs text-zinc-300">Hollywood Hills, Los Angeles, CA • 5 Beds • 7 Baths • 8,200 Sq Ft</p>
+                  <p class="text-[11px] text-zinc-300 leading-snug">
+                    Board-formed architectural concrete, cantilevered glass infinity pool, and subterranean 1,200-bottle wine gallery.
+                  </p>
+                  <span class="inline-flex text-[11px] font-mono text-emerald-400 pt-1">Click to Zoom ↗</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Subcard 2: Cantilevered Glass Luxury Residence -->
+            <div class="partner-interactive-card group relative h-64 sm:h-72" id="partner-card-3" onclick="openZoomLightbox(2, this)">
+              <img 
+                src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=800&q=85" 
+                alt="Modern Cantilevered Luxury Residence" 
+                class="partner-main-img card-media-img filter brightness-95 transition-transform duration-700 group-hover:scale-105"
+              />
+
+              <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent z-10 pointer-events-none"></div>
+
+              <!-- Static Bottom Badge -->
+              <div class="partner-static-badge text-white pointer-events-none">
+                <span class="text-[10px] font-mono uppercase tracking-wider text-emerald-400">Signature Design</span>
+                <p class="text-base font-bold truncate">Cascading Cantilevers</p>
+                <p class="text-xs text-zinc-300">Venetian Islands • 6,500 Sq Ft</p>
+              </div>
+
+              <!-- On Hover: Details Overlay -->
+              <div class="partner-hover-overlay p-5">
+                <div class="space-y-2">
+                  <div class="flex items-center justify-between">
+                    <span class="text-[10px] font-mono uppercase text-emerald-400 font-bold">Cascading Cantilevers</span>
+                    <span class="text-[10px] font-mono text-zinc-300">$11.8M</span>
+                  </div>
+                  <h4 class="text-base font-bold font-display text-white">Signature Floating Glass Pavilion</h4>
+                  <p class="text-xs text-zinc-300">Venetian Islands, Miami, FL • 4 Beds • 5 Baths • 6,500 Sq Ft</p>
+                  <p class="text-[11px] text-zinc-300 leading-snug">
+                    Floor-to-ceiling hurricane acoustic glazing, 100ft private deepwater yacht slip, and automated shading louvers.
+                  </p>
+                  <span class="inline-flex text-[11px] font-mono text-emerald-400 pt-1">Click to Zoom ↗</span>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- BOTTOM CONTENT: About Us & Editorial Statement -->
+          <div class="pt-2 sm:pt-4">
+            <div class="mb-5 flex items-center justify-between">
+              <h4 class="text-sm font-bold uppercase tracking-wider text-gray-900">About Us</h4>
+              <span class="text-xs text-gray-400 font-mono">EST. 2016 • MIAMI & GLOBAL</span>
+            </div>
+
+            <!-- Dual Columns Story Text matching screenshot text verbatim -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-sm text-zinc-600 leading-relaxed font-normal mb-8">
+              <p>
+                At this, we believe that finding your dream home should be an exciting and seamless journey. With 10 years of experience, we have helped thousands of buyers, sellers.
+              </p>
+              <p>
+                Whether you're looking for a cozy apartment, a luxury villa, or a prime commercial space, our team is committed to providing expert guidance.
+              </p>
+            </div>
+
+            <!-- Bold Signature Statement matching screenshot text -->
+            <div class="border-t border-gray-100 pt-6">
+              <p class="text-xl sm:text-2xl font-bold font-display tracking-tight text-gray-950 leading-snug">
+                Exclusive listings, competitive prices, and expert guidance—all in one place.
+              </p>
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- Quick Metrics Counter Strip with Animated Numbers & Universal Box Hover -->
+      <div id="metrics-strip" class="mt-14 pt-10 border-t border-gray-200/70 grid grid-cols-2 md:grid-cols-4 gap-6 text-center sm:text-left">
+        <div class="box-hover-lift p-4 rounded-2xl bg-white border border-gray-100 shadow-sm">
+          <span class="block text-2xl sm:text-3xl font-bold font-display text-gray-950 tracking-tight" data-target="2.8" id="metric-vol">$2.8B+</span>
+          <span class="text-xs uppercase tracking-wider text-gray-500 font-medium">Volume Transacted</span>
+        </div>
+        <div class="box-hover-lift p-4 rounded-2xl bg-white border border-gray-100 shadow-sm">
+          <span class="block text-2xl sm:text-3xl font-bold font-display text-gray-950 tracking-tight" data-target="850" id="metric-estates">850+</span>
+          <span class="text-xs uppercase tracking-wider text-gray-500 font-medium">Curated Properties</span>
+        </div>
+        <div class="box-hover-lift p-4 rounded-2xl bg-white border border-gray-100 shadow-sm">
+          <span class="block text-2xl sm:text-3xl font-bold font-display text-gray-950 tracking-tight" data-target="99.4" id="metric-satisfaction">99.4%</span>
+          <span class="text-xs uppercase tracking-wider text-gray-500 font-medium">Client Satisfaction</span>
+        </div>
+        <div class="box-hover-lift p-4 rounded-2xl bg-white border border-gray-100 shadow-sm">
+          <span class="block text-2xl sm:text-3xl font-bold font-display text-gray-950 tracking-tight" data-target="14" id="metric-hubs">14</span>
+          <span class="text-xs uppercase tracking-wider text-gray-500 font-medium">Metropolitan Hubs</span>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- ==========================================
+         INTERACTIVE ARCHITECTURAL MATERIAL & FINISH LAB
+         (Fills empty transition space with tactile engineering studies)
+         ========================================== -->
+    <section id="material-lab-section" class="scroll-mt-10 bg-[#090b10] border border-white/10 rounded-3xl p-6 sm:p-9 shadow-2xl relative overflow-hidden">
+      
+      <!-- Top Title Strip -->
+      <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8">
+        <div>
+          <div class="flex items-center gap-2 mb-1.5">
+            <span class="px-3 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 text-[10px] font-bold tracking-widest uppercase">
+              Tactile Engineering
+            </span>
+            <span class="text-xs text-zinc-400 font-mono">• Interactive Specimen Inspector</span>
+          </div>
+          <h2 class="text-2xl sm:text-3xl font-bold font-display tracking-tight text-white">
+            Curated Architectural Finishes
+          </h2>
+          <p class="text-xs sm:text-sm text-zinc-400 max-w-xl font-light mt-1">
+            Tap any structural specimen to inspect high-definition surface grain, acoustic insulation metrics, and quarry provenance.
+          </p>
+        </div>
+
+        <div class="flex items-center gap-2">
+          <span class="frosted-dark-pill px-3.5 py-1.5 rounded-full text-xs font-mono text-zinc-300 border border-white/15 flex items-center gap-2 shadow-lg">
+            <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+            <span id="active-material-name">01. Honed Carrara Marble</span>
+          </span>
+        </div>
+      </div>
+
+      <!-- Specimen Inspector Grid -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
+        
+        <!-- Left: 4 Interactive Specimen Selectors -->
+        <div class="lg:col-span-5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-3">
+          
+          <div class="material-specimen-card active-specimen p-4 rounded-2xl bg-white/[0.04] border border-white/15 flex items-center gap-4 cursor-pointer" onclick="selectMaterial(0)">
+            <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=300&q=80" alt="Carrara Marble" class="w-14 h-14 rounded-xl object-cover border border-white/10 shrink-0">
+            <div class="flex-1 min-w-0">
+              <div class="flex items-center justify-between">
+                <span class="text-[10px] font-mono text-emerald-400 uppercase tracking-widest">Natural Stone</span>
+                <span class="text-[10px] font-mono text-zinc-400">STC 56</span>
+              </div>
+              <h4 class="text-sm font-bold text-white truncate">Honed Carrara Marble</h4>
+              <p class="text-xs text-zinc-400 truncate">Pietrasanta Quarries, Italy</p>
+            </div>
+          </div>
+
+          <div class="material-specimen-card p-4 rounded-2xl bg-white/[0.04] border border-white/10 flex items-center gap-4 cursor-pointer" onclick="selectMaterial(1)">
+            <img src="https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=300&q=80" alt="Shou Sugi Ban" class="w-14 h-14 rounded-xl object-cover border border-white/10 shrink-0">
+            <div class="flex-1 min-w-0">
+              <div class="flex items-center justify-between">
+                <span class="text-[10px] font-mono text-amber-400 uppercase tracking-widest">Charred Timber</span>
+                <span class="text-[10px] font-mono text-zinc-400">Class A Fire</span>
+              </div>
+              <h4 class="text-sm font-bold text-white truncate">Shou Sugi Ban Cypress</h4>
+              <p class="text-xs text-zinc-400 truncate">Yakisugi Flame Carbonized</p>
+            </div>
+          </div>
+
+          <div class="material-specimen-card p-4 rounded-2xl bg-white/[0.04] border border-white/10 flex items-center gap-4 cursor-pointer" onclick="selectMaterial(2)">
+            <img src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=300&q=80" alt="Triple Low-E Acoustic Glass" class="w-14 h-14 rounded-xl object-cover border border-white/10 shrink-0">
+            <div class="flex-1 min-w-0">
+              <div class="flex items-center justify-between">
+                <span class="text-[10px] font-mono text-cyan-400 uppercase tracking-widest">Acoustic Glazing</span>
+                <span class="text-[10px] font-mono text-zinc-400">R-14.2</span>
+              </div>
+              <h4 class="text-sm font-bold text-white truncate">Triple Low-E Acoustic Glass</h4>
+              <p class="text-xs text-zinc-400 truncate">Cryogenic Vacuum Interlayer</p>
+            </div>
+          </div>
+
+          <div class="material-specimen-card p-4 rounded-2xl bg-white/[0.04] border border-white/10 flex items-center gap-4 cursor-pointer" onclick="selectMaterial(3)">
+            <img src="https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?auto=format&fit=crop&w=300&q=80" alt="Brushed Champagne Titanium" class="w-14 h-14 rounded-xl object-cover border border-white/10 shrink-0">
+            <div class="flex-1 min-w-0">
+              <div class="flex items-center justify-between">
+                <span class="text-[10px] font-mono text-purple-400 uppercase tracking-widest">Aero Metallurgy</span>
+                <span class="text-[10px] font-mono text-zinc-400">Grade 5 Ti</span>
+              </div>
+              <h4 class="text-sm font-bold text-white truncate">Brushed Champagne Titanium</h4>
+              <p class="text-xs text-zinc-400 truncate">Directional Satin Millwork</p>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Right: Active Specimen Stage with Dynamic Zoom & Live Specs -->
+        <div class="lg:col-span-7 flex flex-col justify-between p-6 rounded-2xl bg-black/50 border border-white/10 relative overflow-hidden group">
+          
+          <div class="relative h-60 sm:h-72 w-full rounded-xl overflow-hidden mb-5">
+            <img id="material-hero-img" src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=85" alt="Active Material" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
+            <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent pointer-events-none"></div>
+            
+            <div class="absolute bottom-4 left-4 right-4 flex items-center justify-between text-white z-10">
+              <div>
+                <span class="text-[10px] font-mono uppercase tracking-widest text-emerald-400" id="material-hero-category">Natural Italian Stone</span>
+                <h3 class="text-lg font-bold font-display" id="material-hero-title">Honed Carrara Calacatta</h3>
+              </div>
+              <button onclick="inspectMaterialZoom()" class="frosted-dark-pill px-3 py-1.5 rounded-full text-xs font-semibold text-white flex items-center gap-1.5 hover:bg-white hover:text-black transition-colors cursor-pointer shadow-lg">
+                <i data-lucide="zoom-in" class="w-3.5 h-3.5"></i>
+                <span>Micro Loupe</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Live Engineering Telemetry Metrics -->
+          <div class="grid grid-cols-3 gap-3 text-center border-t border-white/10 pt-4">
+            <div class="p-2.5 rounded-xl bg-white/[0.03] border border-white/5">
+              <span class="text-[10px] text-zinc-400 uppercase tracking-wider block font-mono">Acoustic Shield</span>
+              <span class="text-base font-bold font-mono text-emerald-400 mt-0.5 block" id="material-spec-acoustic">STC 56</span>
+            </div>
+            <div class="p-2.5 rounded-xl bg-white/[0.03] border border-white/5">
+              <span class="text-[10px] text-zinc-400 uppercase tracking-wider block font-mono">Thermal Rating</span>
+              <span class="text-base font-bold font-mono text-white mt-0.5 block" id="material-spec-thermal">R-32.0</span>
+            </div>
+            <div class="p-2.5 rounded-xl bg-white/[0.03] border border-white/5">
+              <span class="text-[10px] text-zinc-400 uppercase tracking-wider block font-mono">Provenance</span>
+              <span class="text-base font-bold font-mono text-white mt-0.5 block" id="material-spec-origin">Carrara, IT</span>
+            </div>
+          </div>
+
+          <!-- Sample Box CTA -->
+          <button onclick="openTourModal('Material Sample Box Inquiry'); showToast('Curating physical finish swatches for private delivery.')" class="mt-4 w-full py-3 bg-white text-zinc-950 hover:bg-zinc-200 font-bold text-xs uppercase tracking-wider rounded-xl transition-all flex items-center justify-center gap-2 shadow-lg cursor-pointer">
+            <i data-lucide="package" class="w-3.5 h-3.5"></i>
+            <span>Request Bespoke Material Swatch Box</span>
+          </button>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- ==========================================
+         GLOBAL ARCHITECTURAL CONSORTIUM & BUILDERS
+         Text Marquee Slider (Flowing to the RIGHT)
+         ========================================== -->
+    <div class="builder-marquee-strip" aria-label="Global builders and partner countries">
+      <div class="builder-marquee-track">
+        
+        <!-- Track 1 -->
+        <div class="flex items-center gap-6 sm:gap-8 shrink-0">
+          <div class="builder-pill-item">
+            <span class="px-2.5 py-1 rounded bg-white/10 text-white font-mono font-bold text-[11px] uppercase tracking-wider border border-white/15">SWITZERLAND</span>
+            <span class="text-white font-display font-semibold text-sm sm:text-base">Herzog & de Meuron Mastercraft</span>
+            <span class="text-emerald-400 font-mono text-xs">• Zurich</span>
+            <span class="text-emerald-400/80 ml-4 text-xs">✦</span>
+          </div>
+
+          <div class="builder-pill-item">
+            <span class="px-2.5 py-1 rounded bg-white/10 text-white font-mono font-bold text-[11px] uppercase tracking-wider border border-white/15">JAPAN</span>
+            <span class="text-white font-display font-semibold text-sm sm:text-base">Takenaka Corporation & Tadao Ando Associates</span>
+            <span class="text-emerald-400 font-mono text-xs">• Tokyo & Kyoto</span>
+            <span class="text-emerald-400/80 ml-4 text-xs">✦</span>
+          </div>
+
+          <div class="builder-pill-item">
+            <span class="px-2.5 py-1 rounded bg-white/10 text-white font-mono font-bold text-[11px] uppercase tracking-wider border border-white/15">UNITED STATES</span>
+            <span class="text-white font-display font-semibold text-sm sm:text-base">BAM Luxury Builders & Olson Kundig Residences</span>
+            <span class="text-emerald-400 font-mono text-xs">• New York & Seattle</span>
+            <span class="text-emerald-400/80 ml-4 text-xs">✦</span>
+          </div>
+
+          <div class="builder-pill-item">
+            <span class="px-2.5 py-1 rounded bg-white/10 text-white font-mono font-bold text-[11px] uppercase tracking-wider border border-white/15">ITALY</span>
+            <span class="text-white font-display font-semibold text-sm sm:text-base">Antinori Architettura & Marmi Carrara Atelier</span>
+            <span class="text-emerald-400 font-mono text-xs">• Milan & Florence</span>
+            <span class="text-emerald-400/80 ml-4 text-xs">✦</span>
+          </div>
+
+          <div class="builder-pill-item">
+            <span class="px-2.5 py-1 rounded bg-white/10 text-white font-mono font-bold text-[11px] uppercase tracking-wider border border-white/15">UNITED KINGDOM</span>
+            <span class="text-white font-display font-semibold text-sm sm:text-base">Sir Robert McAlpine & Foster + Partners Private Estates</span>
+            <span class="text-emerald-400 font-mono text-xs">• London</span>
+            <span class="text-emerald-400/80 ml-4 text-xs">✦</span>
+          </div>
+
+          <div class="builder-pill-item">
+            <span class="px-2.5 py-1 rounded bg-white/10 text-white font-mono font-bold text-[11px] uppercase tracking-wider border border-white/15">FRANCE</span>
+            <span class="text-white font-display font-semibold text-sm sm:text-base">Ateliers Jean Nouvel & Bouygues Bâtiment International</span>
+            <span class="text-emerald-400 font-mono text-xs">• Paris & Côte d'Azur</span>
+            <span class="text-emerald-400/80 ml-4 text-xs">✦</span>
+          </div>
+
+          <div class="builder-pill-item">
+            <span class="px-2.5 py-1 rounded bg-white/10 text-white font-mono font-bold text-[11px] uppercase tracking-wider border border-white/15">GERMANY</span>
+            <span class="text-white font-display font-semibold text-sm sm:text-base">HUF HAUS Precision Engineering & KSP Engel</span>
+            <span class="text-emerald-400 font-mono text-xs">• Frankfurt</span>
+            <span class="text-emerald-400/80 ml-4 text-xs">✦</span>
+          </div>
+
+          <div class="builder-pill-item">
+            <span class="px-2.5 py-1 rounded bg-white/10 text-white font-mono font-bold text-[11px] uppercase tracking-wider border border-white/15">UNITED ARAB EMIRATES</span>
+            <span class="text-white font-display font-semibold text-sm sm:text-base">Omniyat Signature & Zaha Hadid Developments</span>
+            <span class="text-emerald-400 font-mono text-xs">• Dubai</span>
+            <span class="text-emerald-400/80 ml-4 text-xs">✦</span>
+          </div>
+
+          <div class="builder-pill-item">
+            <span class="px-2.5 py-1 rounded bg-white/10 text-white font-mono font-bold text-[11px] uppercase tracking-wider border border-white/15">MONACO</span>
+            <span class="text-white font-display font-semibold text-sm sm:text-base">Groupe Marzocco & J.B. Pastor & Fils</span>
+            <span class="text-emerald-400 font-mono text-xs">• Monte Carlo</span>
+            <span class="text-emerald-400/80 ml-4 text-xs">✦</span>
+          </div>
+
+          <div class="builder-pill-item">
+            <span class="px-2.5 py-1 rounded bg-white/10 text-white font-mono font-bold text-[11px] uppercase tracking-wider border border-white/15">SINGAPORE</span>
+            <span class="text-white font-display font-semibold text-sm sm:text-base">Woh Hup Sovereign & WOHA Architectural Consortium</span>
+            <span class="text-emerald-400 font-mono text-xs">• Marina Bay</span>
+            <span class="text-emerald-400/80 ml-4 text-xs">✦</span>
+          </div>
+        </div>
+
+        <!-- Track 2 (Identical for Seamless Infinite Rightwards Marquee) -->
+        <div class="flex items-center gap-6 sm:gap-8 shrink-0" aria-hidden="true">
+          <div class="builder-pill-item">
+            <span class="px-2.5 py-1 rounded bg-white/10 text-white font-mono font-bold text-[11px] uppercase tracking-wider border border-white/15">SWITZERLAND</span>
+            <span class="text-white font-display font-semibold text-sm sm:text-base">Herzog & de Meuron Mastercraft</span>
+            <span class="text-emerald-400 font-mono text-xs">• Zurich</span>
+            <span class="text-emerald-400/80 ml-4 text-xs">✦</span>
+          </div>
+
+          <div class="builder-pill-item">
+            <span class="px-2.5 py-1 rounded bg-white/10 text-white font-mono font-bold text-[11px] uppercase tracking-wider border border-white/15">JAPAN</span>
+            <span class="text-white font-display font-semibold text-sm sm:text-base">Takenaka Corporation & Tadao Ando Associates</span>
+            <span class="text-emerald-400 font-mono text-xs">• Tokyo & Kyoto</span>
+            <span class="text-emerald-400/80 ml-4 text-xs">✦</span>
+          </div>
+
+          <div class="builder-pill-item">
+            <span class="px-2.5 py-1 rounded bg-white/10 text-white font-mono font-bold text-[11px] uppercase tracking-wider border border-white/15">UNITED STATES</span>
+            <span class="text-white font-display font-semibold text-sm sm:text-base">BAM Luxury Builders & Olson Kundig Residences</span>
+            <span class="text-emerald-400 font-mono text-xs">• New York & Seattle</span>
+            <span class="text-emerald-400/80 ml-4 text-xs">✦</span>
+          </div>
+
+          <div class="builder-pill-item">
+            <span class="px-2.5 py-1 rounded bg-white/10 text-white font-mono font-bold text-[11px] uppercase tracking-wider border border-white/15">ITALY</span>
+            <span class="text-white font-display font-semibold text-sm sm:text-base">Antinori Architettura & Marmi Carrara Atelier</span>
+            <span class="text-emerald-400 font-mono text-xs">• Milan & Florence</span>
+            <span class="text-emerald-400/80 ml-4 text-xs">✦</span>
+          </div>
+
+          <div class="builder-pill-item">
+            <span class="px-2.5 py-1 rounded bg-white/10 text-white font-mono font-bold text-[11px] uppercase tracking-wider border border-white/15">UNITED KINGDOM</span>
+            <span class="text-white font-display font-semibold text-sm sm:text-base">Sir Robert McAlpine & Foster + Partners Private Estates</span>
+            <span class="text-emerald-400 font-mono text-xs">• London</span>
+            <span class="text-emerald-400/80 ml-4 text-xs">✦</span>
+          </div>
+
+          <div class="builder-pill-item">
+            <span class="px-2.5 py-1 rounded bg-white/10 text-white font-mono font-bold text-[11px] uppercase tracking-wider border border-white/15">FRANCE</span>
+            <span class="text-white font-display font-semibold text-sm sm:text-base">Ateliers Jean Nouvel & Bouygues Bâtiment International</span>
+            <span class="text-emerald-400 font-mono text-xs">• Paris & Côte d'Azur</span>
+            <span class="text-emerald-400/80 ml-4 text-xs">✦</span>
+          </div>
+
+          <div class="builder-pill-item">
+            <span class="px-2.5 py-1 rounded bg-white/10 text-white font-mono font-bold text-[11px] uppercase tracking-wider border border-white/15">GERMANY</span>
+            <span class="text-white font-display font-semibold text-sm sm:text-base">HUF HAUS Precision Engineering & KSP Engel</span>
+            <span class="text-emerald-400 font-mono text-xs">• Frankfurt</span>
+            <span class="text-emerald-400/80 ml-4 text-xs">✦</span>
+          </div>
+
+          <div class="builder-pill-item">
+            <span class="px-2.5 py-1 rounded bg-white/10 text-white font-mono font-bold text-[11px] uppercase tracking-wider border border-white/15">UNITED ARAB EMIRATES</span>
+            <span class="text-white font-display font-semibold text-sm sm:text-base">Omniyat Signature & Zaha Hadid Developments</span>
+            <span class="text-emerald-400 font-mono text-xs">• Dubai</span>
+            <span class="text-emerald-400/80 ml-4 text-xs">✦</span>
+          </div>
+
+          <div class="builder-pill-item">
+            <span class="px-2.5 py-1 rounded bg-white/10 text-white font-mono font-bold text-[11px] uppercase tracking-wider border border-white/15">MONACO</span>
+            <span class="text-white font-display font-semibold text-sm sm:text-base">Groupe Marzocco & J.B. Pastor & Fils</span>
+            <span class="text-emerald-400 font-mono text-xs">• Monte Carlo</span>
+            <span class="text-emerald-400/80 ml-4 text-xs">✦</span>
+          </div>
+
+          <div class="builder-pill-item">
+            <span class="px-2.5 py-1 rounded bg-white/10 text-white font-mono font-bold text-[11px] uppercase tracking-wider border border-white/15">SINGAPORE</span>
+            <span class="text-white font-display font-semibold text-sm sm:text-base">Woh Hup Sovereign & WOHA Architectural Consortium</span>
+            <span class="text-emerald-400 font-mono text-xs">• Marina Bay</span>
+            <span class="text-emerald-400/80 ml-4 text-xs">✦</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Cinematic Experience -->
+    <section id="cinematic-experience" class="scroll-mt-10 bg-[#07090c] text-white rounded-3xl sm:rounded-4xl overflow-hidden shadow-2xl border border-white/10 relative">
+      
+      <!-- Top Section Intro Strip -->
+      <div class="px-6 sm:px-10 pt-7 pb-4 flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-white/10 relative z-20 bg-[#07090c]">
+        <div>
+          <div class="flex items-center gap-2 mb-1.5">
+            <span class="px-3 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 text-[10px] font-bold tracking-widest uppercase">
+              Architectural Motion Cinema
+            </span>
+            <span class="text-xs text-zinc-400">• Master Audio Removed • Continuous Video Loop</span>
+          </div>
+          <h2 class="text-2xl sm:text-3xl font-bold font-display tracking-tight text-white">
+            Cinematic Living in Motion
+          </h2>
+          <p class="text-xs sm:text-sm text-zinc-400 max-w-2xl font-light mt-1">
+            Continuous living motion canvas. Watch the aerial perspective over private residential sanctuaries unfold seamlessly in 60FPS high definition.
+          </p>
+        </div>
+
+        <div class="flex items-center gap-3">
+          <span class="frosted-dark-pill px-3.5 py-1.5 rounded-full text-xs font-mono text-zinc-300 border border-white/15 flex items-center gap-2 shadow-lg">
+            <i data-lucide="repeat" class="w-3.5 h-3.5 text-emerald-400 animate-spin"></i>
+            <span>Continuous 60FPS Video Loop</span>
+          </span>
+        </div>
+      </div>
+
+      <!-- Main Interactive Video Stage: Clean, perfectly-proportioned height with NO empty dead space -->
+      <div id="video-stage-container" class="relative h-[500px] sm:h-[580px] lg:h-[640px] w-full flex items-center justify-center overflow-hidden select-none">
+        
+        <!-- Background Ambient Video & Canvas with Vignette -->
+        <div class="absolute inset-0 w-full h-full overflow-hidden z-0 bg-black">
+          <video 
+            id="scroll-cinematic-video"
+            src="assets/scroll-video.mp4"
+            preload="auto"
+            autoplay
+            loop
+            muted
+            playsinline
+            webkit-playsinline
+            class="w-full h-full object-cover filter brightness-[0.88] contrast-[1.06]"
+          ></video>
+
+          <!-- Subtle Vignette & Gradient Overlays for Crystal-Clear Text & Controls -->
+          <div class="absolute inset-0 bg-gradient-to-t from-[#07090c] via-black/20 to-[#07090c]/80 pointer-events-none z-10"></div>
+          <div class="absolute inset-0 bg-gradient-to-r from-[#07090c]/80 via-transparent to-[#07090c]/80 pointer-events-none z-10"></div>
+          
+          <!-- Ambient Colored Backlight Flare that shifts dynamically with narrative phases -->
+          <div id="video-ambient-glow" class="absolute -top-20 -left-20 w-[600px] h-[600px] rounded-full bg-blue-600/15 filter blur-[150px] pointer-events-none z-10 transition-all duration-1000"></div>
+        </div>
+
+        <!-- TOP FLOATING HUD OVERLAY -->
+        <div class="absolute top-5 left-6 right-6 flex items-center justify-between z-30 pointer-events-none">
+          <div class="flex items-center gap-2.5">
+            <span class="frosted-dark-pill px-3.5 py-1.5 rounded-full text-xs font-semibold text-white flex items-center gap-2 shadow-2xl border border-white/20">
+              <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+              <span id="video-mode-badge">Continuous 60FPS Video Loop</span>
+            </span>
+            <span class="frosted-dark-pill px-3 py-1.5 rounded-full text-[11px] font-mono text-zinc-300 border border-white/15 hidden sm:inline-flex items-center gap-1.5 shadow-xl">
+              <i data-lucide="volume-x" class="w-3.5 h-3.5 text-rose-400"></i>
+              Clean Audio-Free Video
+            </span>
+          </div>
+
+          <div class="flex items-center gap-3">
+            <span class="frosted-dark-pill px-3.5 py-1.5 rounded-full text-xs font-mono font-bold text-white border border-white/20 shadow-2xl" id="video-timecode">
+              00:00.0 / 00:27.1
+            </span>
+            <span class="frosted-dark-pill px-2.5 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-wider text-emerald-400 border border-emerald-500/30 hidden sm:inline-block shadow-xl">
+              60 FPS HD
+            </span>
+          </div>
+        </div>
+
+        <!-- FLANKING NARRATIVE CAPSULES (Floating directly on the video) -->
+        <div class="absolute inset-x-6 sm:inset-x-10 top-20 bottom-24 flex flex-col lg:flex-row items-start lg:items-center justify-between pointer-events-none z-20">
+          
+          <!-- LEFT FLOATING CAPSULE: Active Narrative Phase -->
+          <div id="cinematic-phase-card" class="frosted-dark-pill p-5 sm:p-6 rounded-3xl border border-white/20 shadow-2xl max-w-sm pointer-events-auto transition-all duration-500 transform hover:scale-105">
+            <div class="flex items-center justify-between mb-2">
+              <span class="text-[11px] font-mono font-bold uppercase tracking-widest text-emerald-400 flex items-center gap-1.5" id="cinematic-phase-label">
+                <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+                Phase 01 / Aerial Survey
+              </span>
+              <span class="text-xs text-zinc-400 font-mono" id="cinematic-phase-timer">00:00 - 00:07</span>
+            </div>
+            <h3 class="text-lg sm:text-xl font-bold font-display tracking-tight text-white mb-2" id="cinematic-phase-title">
+              Aerial Territory Survey
+            </h3>
+            <p class="text-xs text-zinc-300 leading-relaxed font-light mb-3" id="cinematic-phase-desc">
+              Expansive panoramic drone survey gliding over private master-planned enclaves, surrounded by lush tropical canopies and manicured estates.
+            </p>
+            <div class="pt-2.5 border-t border-white/10 flex items-center justify-between text-[11px] text-zinc-400 font-mono">
+              <span id="cinematic-metric-1" class="font-medium text-white flex items-center gap-1.5">
+                <i data-lucide="compass" class="w-3.5 h-3.5 text-emerald-400"></i>
+                Site: 14.8 Acres
+              </span>
+              <span id="cinematic-metric-2" class="font-medium text-emerald-400">Estate Residential</span>
+            </div>
+          </div>
+
+          <!-- RIGHT FLOATING SPECS DOSSIER -->
+          <div class="hidden lg:flex flex-col gap-2.5 frosted-dark-pill p-5 rounded-3xl border border-white/20 shadow-2xl max-w-xs pointer-events-auto">
+            <div class="flex items-center justify-between border-b border-white/10 pb-2">
+              <span class="text-xs font-bold uppercase tracking-wider text-white">Architectural Study</span>
+              <span class="text-[10px] text-emerald-400 font-mono uppercase bg-emerald-500/20 px-2 py-0.5 rounded-full">Active</span>
+            </div>
+            <div class="space-y-1.5 text-xs">
+              <div class="flex items-center justify-between py-0.5">
+                <span class="text-zinc-400">Drone Flight Path:</span>
+                <span class="font-mono text-emerald-400">Linear Ascent 140m</span>
+              </div>
+              <div class="flex items-center justify-between py-0.5">
+                <span class="text-zinc-400">Curtain Glazing:</span>
+                <span class="text-white font-medium">Triple Low-E Acoustic</span>
+              </div>
+              <div class="flex items-center justify-between py-0.5">
+                <span class="text-zinc-400">Pool System:</span>
+                <span class="text-white font-medium">Infinity Horizon</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- BOTTOM FLOATING CONTROLLER CAPSULE -->
+        <div class="absolute bottom-5 left-1/2 -translate-x-1/2 w-[92%] max-w-xl frosted-dark-pill p-3 sm:p-3.5 rounded-3xl border border-white/20 shadow-2xl z-30 flex flex-col gap-2.5">
+          
+          <!-- Scrub Progress Bar with Tooltip Seeker -->
+          <div class="relative w-full h-2 bg-white/15 rounded-full overflow-hidden cursor-pointer group/bar" id="video-scrub-bar" title="Click or drag anywhere to seek video">
+            <div id="video-progress-fill" class="h-full bg-gradient-to-r from-blue-500 via-indigo-500 to-emerald-400 rounded-full w-0 transition-[width] duration-75"></div>
+          </div>
+
+          <!-- Controller Buttons & Scrub Guidance -->
+          <div class="flex items-center justify-between text-xs font-medium text-white">
+            
+            <div class="flex items-center gap-2">
+              <!-- Play / Pause Toggle -->
+              <button id="toggle-video-autoplay-btn" class="px-3.5 py-1.5 rounded-full bg-white text-zinc-950 font-bold hover:bg-zinc-200 transition-all flex items-center gap-1.5 shadow-lg text-[11px] cursor-pointer">
+                <i data-lucide="pause" class="w-3.5 h-3.5" id="btn-autoplay-icon"></i>
+                <span id="btn-autoplay-text">Pause</span>
+              </button>
+
+              <!-- Reset Button -->
+              <button id="video-reset-btn" class="p-1.5 rounded-full bg-white/10 hover:bg-white/20 transition-colors text-white cursor-pointer shadow-md" title="Rewind to 00:00">
+                <i data-lucide="rotate-ccw" class="w-3.5 h-3.5"></i>
+              </button>
+            </div>
+
+            <!-- Center Status Guidance -->
+            <span class="text-[11px] text-zinc-300 hidden sm:flex items-center gap-1.5 font-medium">
+              <i data-lucide="repeat" class="w-3.5 h-3.5 text-emerald-400"></i>
+              <span>Continuous Cinematic Loop • Tap Play/Pause or scrub bar</span>
+            </span>
+
+            <!-- Right Fullscreen Button -->
+            <button id="video-fullscreen-btn" class="px-3 py-1.5 rounded-full bg-white/10 hover:bg-white/20 transition-colors text-white flex items-center gap-1.5 text-[11px] cursor-pointer shadow-md" title="Fullscreen View">
+              <i data-lucide="maximize" class="w-3.5 h-3.5"></i>
+              <span class="hidden sm:inline">Fullscreen</span>
+            </button>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- ==========================================
+         SECTION 2: EXPLORE OUR BEST LISTINGS
+         (Matches 3-column cards + interactive badges)
+         ========================================== -->
+    <section id="featured-listings" class="scroll-mt-10">
+      
+      <!-- Section Header with Arrows & Page Indicator matching screenshot -->
+      <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8">
+        <div>
+          <div class="flex items-center gap-3">
+            <h2 class="text-3xl sm:text-4xl font-bold tracking-tight text-gray-950 font-display">
+              Explore Our Best Listings
+            </h2>
+          </div>
+          <!-- Filter Tabs -->
+          <div class="flex flex-wrap items-center gap-2 mt-4 text-xs font-medium" id="category-filter-bar">
+            <button class="filter-tab active px-4 py-2 rounded-full bg-black text-white transition-colors" data-category="all">All (6)</button>
+            <button class="filter-tab px-4 py-2 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-700 transition-colors" data-category="villas">Villas (2)</button>
+            <button class="filter-tab px-4 py-2 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-700 transition-colors" data-category="commercial">Commercial (1)</button>
+            <button class="filter-tab px-4 py-2 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-700 transition-colors" data-category="residential">Residential (2)</button>
+            <button class="filter-tab px-4 py-2 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-700 transition-colors" data-category="penthouses">Penthouses (1)</button>
+          </div>
+        </div>
+
+        <!-- Top Right Pagination & Controls: (02) Featured Listings ← → -->
+        <div class="flex items-center gap-4 self-end md:self-auto">
+          <span class="text-xs sm:text-sm font-medium text-gray-500 tracking-wide" id="listing-pagination-label">
+            (02) Featured Listings
+          </span>
+          <div class="flex items-center gap-2">
+            <button id="prev-listings-btn" class="w-9 h-9 rounded-full border border-gray-300 hover:border-black text-gray-700 hover:text-black flex items-center justify-center transition-colors" title="Previous Listings">
+              <i data-lucide="arrow-left" class="w-4 h-4"></i>
+            </button>
+            <button id="next-listings-btn" class="w-9 h-9 rounded-full bg-zinc-900 hover:bg-black text-white flex items-center justify-center transition-colors shadow-sm" title="Next Listings">
+              <i data-lucide="arrow-right" class="w-4 h-4"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- CARDS GRID: Rendered dynamically via app.js -->
+      <div id="listings-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-7 items-stretch">
+        <!-- Rendered dynamically -->
+      </div>
+
+      <!-- ARCHITECTURAL SPOTLIGHT: THE TURNER LIVING SANCTUARY -->
+      <div class="mt-8 box-hover-lift rounded-3xl bg-neutral-900 border border-neutral-800 text-white p-6 sm:p-8 shadow-2xl relative overflow-hidden" id="turner-spotlight-card">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+          
+          <!-- Left: High-Resolution Architectural Media Canvas -->
+          <div class="lg:col-span-7 space-y-3">
+            <div class="relative rounded-2xl overflow-hidden bg-black shadow-2xl border border-white/10 group cursor-pointer" onclick="openAnyImageZoom(this.querySelector('img'), 'The Turner Living Pavilion', 'East Hampton, NY • Classical Neo-Colonial Sanctuary', this)">
+              
+              <img 
+                src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1600&q=90" 
+                alt="The Turner Living Pavilion" 
+                class="w-full h-[360px] sm:h-[420px] object-cover group-hover:scale-105 transition-transform duration-700 filter brightness-95"
+              />
+
+              <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-transparent pointer-events-none"></div>
+
+              <!-- Floating Pill Overlays -->
+              <div class="absolute top-4 left-4 z-20 pointer-events-none flex items-center gap-2">
+                <span class="frosted-dark-pill px-3 py-1 rounded-full text-[11px] font-bold text-white flex items-center gap-1.5 shadow-md">
+                  <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                  <span>Architectural Sanctuary Study</span>
+                </span>
+                <span class="frosted-dark-pill px-2.5 py-1 rounded-full text-[11px] text-zinc-300 hidden sm:inline-block">
+                  Off-Market Reserve
+                </span>
+              </div>
+
+              <!-- Center Hover Zoom Pill -->
+              <div class="partner-zoom-pill hover-zoom-pill">
+                <i data-lucide="zoom-in" class="w-4 h-4 text-emerald-400"></i>
+                <span>Click to Zoom In</span>
+              </div>
+            </div>
+            
+            <div class="flex items-center justify-between text-[11px] text-zinc-400">
+              <span class="flex items-center gap-1.5">
+                <i data-lucide="sparkles" class="w-3.5 h-3.5 text-emerald-400"></i>
+                High-Resolution Master Study • Click image to zoom in
+              </span>
+              <button onclick="openAnyImageZoom(document.querySelector('#turner-spotlight-card img'), 'The Turner Living Pavilion', 'East Hampton, NY • Classical Neo-Colonial Sanctuary', this)" class="text-emerald-400 hover:underline font-semibold flex items-center gap-1">
+                <span>Launch Zoom Lightbox</span>
+                <i data-lucide="arrow-up-right" class="w-3 h-3"></i>
+              </button>
+            </div>
+          </div>
+
+          <!-- Right: Architectural Specifications & Interactive Actions -->
+          <div class="lg:col-span-5 flex flex-col justify-between space-y-6">
+            <div>
+              <div class="flex items-center gap-2 mb-2">
+                <span class="px-2.5 py-1 rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 text-[10px] font-bold tracking-wider uppercase">
+                  Living Architecture
+                </span>
+                <span class="text-xs text-zinc-400">East Hampton Classical Sanctuary</span>
+              </div>
+              <h3 class="text-2xl sm:text-3xl font-bold font-display tracking-tight text-white mb-2">
+                The Turner Living Pavilion
+              </h3>
+              <p class="text-sm text-zinc-300 leading-relaxed font-light mb-5">
+                Experience the volumetric depth of the iconic Turner living suite. Defined by dramatic 9-meter ceiling lines, acoustic curtain glazing, and warm ambient travertine finishes.
+              </p>
+
+              <!-- Interactive Specs Chips -->
+              <div class="grid grid-cols-2 gap-3 mb-6">
+                <div class="p-3 rounded-xl bg-white/5 border border-white/10">
+                  <span class="text-[10px] text-zinc-400 uppercase tracking-wider block">Ceiling Height</span>
+                  <span class="text-sm font-bold text-white">9m Cantilevered</span>
+                </div>
+                <div class="p-3 rounded-xl bg-white/5 border border-white/10">
+                  <span class="text-[10px] text-zinc-400 uppercase tracking-wider block">Glazing System</span>
+                  <span class="text-sm font-bold text-white">Triple-Acoustic</span>
+                </div>
+                <div class="p-3 rounded-xl bg-white/5 border border-white/10">
+                  <span class="text-[10px] text-zinc-400 uppercase tracking-wider block">Acoustic Shield</span>
+                  <span class="text-sm font-bold text-emerald-400">STC 56 Certified</span>
+                </div>
+                <div class="p-3 rounded-xl bg-white/5 border border-white/10">
+                  <span class="text-[10px] text-zinc-400 uppercase tracking-wider block">Interactivity</span>
+                  <span class="text-sm font-bold text-white">Zoom & Pan Ready</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="flex flex-wrap items-center gap-3">
+              <button onclick="openAnyImageZoom(document.querySelector('#turner-spotlight-card img'), 'The Turner Living Pavilion', 'East Hampton, NY • Classical Neo-Colonial Sanctuary', this)" class="px-5 py-2.5 rounded-full bg-white text-zinc-950 font-bold text-xs sm:text-sm hover:bg-zinc-200 hover:scale-105 active:scale-95 transition-all flex items-center gap-2 shadow-lg cursor-pointer">
+                <i data-lucide="zoom-in" class="w-4 h-4 text-zinc-950"></i>
+                <span>Explosive Zoom In</span>
+              </button>
+              <button onclick="openPropertyModal('prop-3')" class="px-5 py-2.5 rounded-full bg-white/10 hover:bg-white/20 border border-white/20 text-white font-semibold text-xs sm:text-sm transition-all flex items-center gap-2 hover:scale-105 active:scale-95 cursor-pointer">
+                <i data-lucide="file-text" class="w-4 h-4"></i>
+                <span>Inspect Full Dossier</span>
+              </button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </section>
+
+
+    
+
+
+    <!-- ==========================================
+         SECTION 3: CURATED METROPOLITAN LOCATIONS
+         ========================================== -->
+    <section class="space-y-8">
+      <div class="flex items-center justify-between">
+        <div>
+          <span class="text-xs font-bold uppercase tracking-wider text-gray-400">Prime Enclaves</span>
+          <h2 class="text-2xl sm:text-3xl font-bold font-display text-gray-900 mt-1">Explore Premier Destinations</h2>
+        </div>
+        <button onclick="filterByCategory('all')" class="text-xs font-semibold uppercase tracking-wider text-black flex items-center gap-1 hover:gap-2 transition-all">
+          View All Locations <i data-lucide="chevron-right" class="w-4 h-4"></i>
+        </button>
+      </div>
+
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+        
+        <div class="box-hover-lift relative h-44 sm:h-52 rounded-2xl overflow-hidden group cursor-pointer shadow-md border border-gray-100" onclick="filterByLocation('Miami')">
+          <img src="https://images.unsplash.com/photo-1506953823976-52e1fdc0149a?auto=format&fit=crop&w=600&q=80" alt="Miami" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+          <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent"></div>
+          <div class="absolute bottom-4 left-4 text-white">
+            <span class="text-xs text-white/70">18 Estates</span>
+            <p class="font-bold text-lg">Miami, FL</p>
+          </div>
+        </div>
+
+        <div class="box-hover-lift relative h-44 sm:h-52 rounded-2xl overflow-hidden group cursor-pointer shadow-md border border-gray-100" onclick="filterByLocation('Downtown')">
+          <img src="https://images.unsplash.com/photo-1514565131-fce0801e5785?auto=format&fit=crop&w=600&q=80" alt="Downtown Core" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+          <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent"></div>
+          <div class="absolute bottom-4 left-4 text-white">
+            <span class="text-xs text-white/70">24 Estates</span>
+            <p class="font-bold text-lg">Downtown Core</p>
+          </div>
+        </div>
+
+        <div class="box-hover-lift relative h-44 sm:h-52 rounded-2xl overflow-hidden group cursor-pointer shadow-md border border-gray-100" onclick="filterByLocation('Coconut Grove')">
+          <img src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=600&q=80" alt="Coconut Grove" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+          <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent"></div>
+          <div class="absolute bottom-4 left-4 text-white">
+            <span class="text-xs text-white/70">12 Estates</span>
+            <p class="font-bold text-lg">Coconut Grove</p>
+          </div>
+        </div>
+
+        <div class="box-hover-lift relative h-44 sm:h-52 rounded-2xl overflow-hidden group cursor-pointer shadow-md border border-gray-100" onclick="filterByLocation('Brickell')">
+          <img src="https://images.unsplash.com/photo-1533105079780-92b9be482077?auto=format&fit=crop&w=600&q=80" alt="Brickell" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+          <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent"></div>
+          <div class="absolute bottom-4 left-4 text-white">
+            <span class="text-xs text-white/70">15 Penthouses</span>
+            <p class="font-bold text-lg">Brickell Key</p>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+
+    
+
+
+    <!-- ==========================================
+         SECTION 4: CLIENT TESTIMONIALS (Nav item)
+         Full-Width Left-Moving Box Marquee & High-Contrast Quotes
+         ========================================== -->
+    <section id="testimonials" class="scroll-mt-10 py-10 sm:py-16 overflow-visible w-full">
+      <div class="max-w-3xl mx-auto text-center mb-10 px-4">
+        <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/5 border border-white/10 text-xs font-mono uppercase tracking-widest text-emerald-400 mb-3 shadow-inner">
+          <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+          <span>Client Recognition & Institutional Trust</span>
+        </div>
+        <h2 class="text-3xl sm:text-4xl lg:text-5xl font-bold font-display text-white tracking-tight hero-title-shadow">
+          Endorsements From Visionaries
+        </h2>
+        <p class="text-sm sm:text-base text-zinc-300 mt-3 leading-relaxed">
+          Hear from leaders in architecture, global design, and private equity who trusted Provenance with their marquee estate acquisitions.
+        </p>
+      </div>
+
+      <!-- Left-Moving Infinite Loop Box Marquee -->
+      <div class="marquee-container-wrapper">
+        <div id="testimonials-marquee-track" class="marquee-content-track">
+          <!-- Rendered dynamically via app.js -->
+        </div>
+      </div>
+    </section>
+
+
+    
+
+
+    <!-- ==========================================
+         SECTION 5: PRIVATE ADVISORY & ENQUIRY
+         (Medium-Sized Acquisition Enquiry Form)
+         ========================================== -->
+    <section id="advisory" class="scroll-mt-10 rounded-[12px] bg-gradient-to-br from-[#0c1017] via-[#080a0f] to-[#0d131d] text-white p-6 sm:p-10 lg:p-14 relative overflow-hidden shadow-2xl border border-white/10">
+      
+      <!-- Subtle architectural backdrop -->
+      <div class="absolute right-0 top-0 bottom-0 w-full lg:w-1/2 opacity-15 pointer-events-none mix-blend-luminosity">
+        <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=85" class="w-full h-full object-cover" alt="Background">
+      </div>
+
+      <div class="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-center">
+        
+        <!-- Left Column: White-Glove Advisory Copy -->
+        <div class="lg:col-span-5 space-y-6">
+          <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/10 border border-white/15 text-xs font-mono uppercase tracking-widest text-emerald-400 shadow-inner">
+            <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+            <span>Private Client Concierge</span>
+          </div>
+          
+          <h2 class="text-3xl sm:text-4xl lg:text-[42px] leading-[1.08] font-bold font-display tracking-tight text-white hero-title-shadow">
+            Looking For An Off-Market Sanctuary?
+          </h2>
+          
+          <p class="text-zinc-300 text-sm sm:text-base leading-relaxed font-light">
+            Over 40% of our premier transactions occur completely off-market to preserve confidentiality. Submit your acquisition criteria directly to our private client desk for bespoke dossiers.
+          </p>
+
+          <!-- Advisory Trust Highlights -->
+          <div class="space-y-3 pt-2 border-t border-white/10">
+            <div class="flex items-center gap-3">
+              <div class="w-8 h-8 rounded-full bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center shrink-0">
+                <i data-lucide="shield-check" class="w-4 h-4 text-emerald-400"></i>
+              </div>
+              <span class="text-xs sm:text-sm text-zinc-200">100% Confidential NDA Standard with Private Counsel</span>
+            </div>
+            <div class="flex items-center gap-3">
+              <div class="w-8 h-8 rounded-full bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center shrink-0">
+                <i data-lucide="clock" class="w-4 h-4 text-emerald-400"></i>
+              </div>
+              <span class="text-xs sm:text-sm text-zinc-200">Guaranteed Principal Response Within 2 Business Hours</span>
+            </div>
+            <div class="flex items-center gap-3">
+              <div class="w-8 h-8 rounded-full bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center shrink-0">
+                <i data-lucide="key" class="w-4 h-4 text-emerald-400"></i>
+              </div>
+              <span class="text-xs sm:text-sm text-zinc-200">Direct Access to Pre-Public & Sovereign Estate Portfolios</span>
+            </div>
+          </div>
+
+          <!-- Direct Line -->
+          <div class="pt-2 flex items-center gap-4">
+            <a href="tel:+13055550188" class="inline-flex items-center gap-2 text-xs sm:text-sm font-mono text-emerald-400 hover:text-emerald-300 transition-colors">
+              <i data-lucide="phone" class="w-4 h-4"></i>
+              <span>Direct Desk: +1 (305) 555-0188</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- Right Column: Medium-Sized Enquiry Details Form -->
+        <div class="lg:col-span-7">
+          <div id="enquiry-form-card" class="p-6 sm:p-8 lg:p-9 rounded-[12px] bg-[#0b0f16]/95 border border-white/15 shadow-2xl backdrop-blur-xl">
+            
+            <div class="flex items-center justify-between pb-4 mb-5 border-b border-white/10">
+              <div>
+                <h3 class="text-lg sm:text-xl font-bold font-display text-white tracking-tight">Private Acquisition Enquiry</h3>
+                <p class="text-xs text-zinc-400 mt-0.5">Please furnish your requirements below for curated dossier delivery.</p>
+              </div>
+              <span class="hidden sm:inline-flex px-2.5 py-1 rounded text-[10px] font-mono font-bold uppercase tracking-wider bg-emerald-500/15 text-emerald-400 border border-emerald-500/25">
+                Confidential
+              </span>
+            </div>
+
+            <!-- Form -->
+            <form id="enquiry-form" class="space-y-4">
+              
+              <!-- Row 1: Name & Email -->
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label class="block text-xs font-mono font-bold uppercase tracking-wider text-zinc-300 mb-1.5" for="enquiry-name">
+                    Client Full Name <span class="text-emerald-400">*</span>
+                  </label>
+                  <input type="text" id="enquiry-name" required placeholder="Lord Henrik / Elena Rostova" class="enquiry-input-field">
+                </div>
+                <div>
+                  <label class="block text-xs font-mono font-bold uppercase tracking-wider text-zinc-300 mb-1.5" for="enquiry-email">
+                    Direct Email <span class="text-emerald-400">*</span>
+                  </label>
+                  <input type="email" id="enquiry-email" required placeholder="client@familyoffice.com" class="enquiry-input-field">
+                </div>
+              </div>
+
+              <!-- Row 2: Phone & Preferred Location -->
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label class="block text-xs font-mono font-bold uppercase tracking-wider text-zinc-300 mb-1.5" for="enquiry-phone">
+                    Phone / WhatsApp <span class="text-emerald-400">*</span>
+                  </label>
+                  <input type="tel" id="enquiry-phone" required placeholder="+1 (305) 000-0000" class="enquiry-input-field">
+                </div>
+                <div>
+                  <label class="block text-xs font-mono font-bold uppercase tracking-wider text-zinc-300 mb-1.5" for="enquiry-location">
+                    Target Enclave / Region
+                  </label>
+                  <select id="enquiry-location" class="enquiry-input-field cursor-pointer">
+                    <option value="Miami & Coastal Florida" class="bg-[#0b0f16] text-white">Miami & Coastal Florida</option>
+                    <option value="Palm Beach Island" class="bg-[#0b0f16] text-white">Palm Beach Island</option>
+                    <option value="New York & Hamptons" class="bg-[#0b0f16] text-white">New York & Hamptons</option>
+                    <option value="Aspen & Rocky Enclaves" class="bg-[#0b0f16] text-white">Aspen & Rocky Enclaves</option>
+                    <option value="International / Mediterranean" class="bg-[#0b0f16] text-white">International / Mediterranean</option>
+                  </select>
+                </div>
+              </div>
+
+              <!-- Row 3: Property Type & Budget -->
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label class="block text-xs font-mono font-bold uppercase tracking-wider text-zinc-300 mb-1.5" for="enquiry-property-type">
+                    Property Typology
+                  </label>
+                  <select id="enquiry-property-type" class="enquiry-input-field cursor-pointer">
+                    <option value="Oceanfront Architectural Villa" class="bg-[#0b0f16] text-white">Oceanfront Architectural Villa</option>
+                    <option value="Trophy Sky Penthouse" class="bg-[#0b0f16] text-white">Trophy Sky Penthouse</option>
+                    <option value="Minimalist Brutalist Compound" class="bg-[#0b0f16] text-white">Minimalist Brutalist Compound</option>
+                    <option value="Commercial Flagship / Headquarters" class="bg-[#0b0f16] text-white">Commercial Flagship / Headquarters</option>
+                    <option value="Unlisted Off-Market Portfolio" class="bg-[#0b0f16] text-white">Unlisted Off-Market Portfolio</option>
+                  </select>
+                </div>
+                <div>
+                  <label class="block text-xs font-mono font-bold uppercase tracking-wider text-zinc-300 mb-1.5" for="enquiry-budget">
+                    Target Investment Range
+                  </label>
+                  <select id="enquiry-budget" class="enquiry-input-field cursor-pointer">
+                    <option value="$3,000,000 – $7,000,000" class="bg-[#0b0f16] text-white">$3,000,000 – $7,000,000</option>
+                    <option value="$7,000,000 – $15,000,000" class="bg-[#0b0f16] text-white" selected>$7,000,000 – $15,000,000</option>
+                    <option value="$15,000,000 – $30,000,000" class="bg-[#0b0f16] text-white">$15,000,000 – $30,000,000</option>
+                    <option value="$30,000,000+ Sovereign Class" class="bg-[#0b0f16] text-white">$30,000,000+ Sovereign Class</option>
+                  </select>
+                </div>
+              </div>
+
+              <!-- Row 4: Specific Requirements / Notes -->
+              <div>
+                <label class="block text-xs font-mono font-bold uppercase tracking-wider text-zinc-300 mb-1.5" for="enquiry-notes">
+                  Specific Architectural Requirements / Acquisition Notes
+                </label>
+                <textarea id="enquiry-notes" rows="3" placeholder="e.g. Minimum 6,000 sq ft, private deepwater yacht dockage, minimum 2-acre security buffer, or preferred architect..." class="enquiry-input-field resize-none"></textarea>
+              </div>
+
+              <!-- Submit Button & Feedback -->
+              <div class="pt-2">
+                <button type="submit" class="w-full py-3.5 px-6 rounded-full bg-emerald-500 hover:bg-emerald-400 active:scale-[0.99] text-black font-bold text-sm sm:text-base tracking-wide transition-all shadow-[0_10px_30px_rgba(16,185,129,0.45)] hover:shadow-[0_14px_40px_rgba(52,211,153,0.65)] cursor-pointer flex items-center justify-center gap-2 group">
+                  <span>Submit Confidential Enquiry</span>
+                  <i data-lucide="arrow-up-right" class="w-4 h-4 text-black group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform"></i>
+                </button>
+              </div>
+
+              <!-- Success Alert Message -->
+              <div id="enquiry-success-message" class="hidden mt-3 p-3.5 rounded-lg bg-emerald-500/15 border border-emerald-500/30 text-xs font-mono text-emerald-300 text-center flex items-center justify-center gap-2">
+                <i data-lucide="check-circle" class="w-4 h-4 text-emerald-400"></i>
+                <span>Enquiry registered. A senior private partner will dispatch your requested dossier.</span>
+              </div>
+            </form>
+
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+
+    
+
+  </main>
+
+
+  <!-- FOOTER -->
+  <footer class="bg-white border-t border-gray-200 mt-20">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+      
+      <div class="grid grid-cols-1 md:grid-cols-5 gap-10 mb-14">
+        
+        <div class="md:col-span-2">
+          <a href="#" class="flex items-center gap-2 mb-4">
+            <span class="text-2xl font-bold font-display tracking-widest text-gray-950 uppercase" style="font-family: 'Cinzel', serif; letter-spacing: 0.1em;">Provenance</span>
+            <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+          </a>
+          <p class="text-sm text-gray-500 leading-relaxed max-w-sm mb-6">
+            Curating architecturally distinguished residential and commercial sanctuaries. Dedicated to purity of form, exceptional engineering, and enduring value.
+          </p>
+          <div class="flex items-center gap-3">
+            <a href="#" class="w-9 h-9 rounded-full bg-gray-100 hover:bg-black hover:text-white flex items-center justify-center text-gray-600 transition-colors">
+              <i data-lucide="instagram" class="w-4 h-4"></i>
+            </a>
+            <a href="#" class="w-9 h-9 rounded-full bg-gray-100 hover:bg-black hover:text-white flex items-center justify-center text-gray-600 transition-colors">
+              <i data-lucide="twitter" class="w-4 h-4"></i>
+            </a>
+            <a href="#" class="w-9 h-9 rounded-full bg-gray-100 hover:bg-black hover:text-white flex items-center justify-center text-gray-600 transition-colors">
+              <i data-lucide="linkedin" class="w-4 h-4"></i>
+            </a>
+          </div>
+        </div>
+
+        <div>
+          <h4 class="text-xs font-bold uppercase tracking-wider text-gray-900 mb-4">Portfolios</h4>
+          <ul class="space-y-2.5 text-sm text-gray-500">
+            <li><a href="#featured-listings" class="hover:text-black transition-colors" onclick="filterByCategory('villas')">Modern Villas</a></li>
+            <li><a href="#featured-listings" class="hover:text-black transition-colors" onclick="filterByCategory('penthouses')">Sky Penthouses</a></li>
+            <li><a href="#featured-listings" class="hover:text-black transition-colors" onclick="filterByCategory('commercial')">Commercial Flagships</a></li>
+            <li><a href="#featured-listings" class="hover:text-black transition-colors" onclick="filterByCategory('residential')">Architectural Interiors</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="text-xs font-bold uppercase tracking-wider text-gray-900 mb-4">Global Offices</h4>
+          <ul class="space-y-2.5 text-sm text-gray-500">
+            <li>Miami: 801 Brickell Bay Dr</li>
+            <li>New York: 432 Park Avenue</li>
+            <li>London: Mayfair Sanctuary Sq</li>
+            <li>Dubai: DIFC Gate Village</li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="text-xs font-bold uppercase tracking-wider text-gray-900 mb-4">Private Gazette</h4>
+          <p class="text-xs text-gray-500 mb-3">Subscribe to our weekly dispatch of newly curated architectural releases.</p>
+          <form id="newsletter-form" class="space-y-2">
+            <input type="email" required placeholder="Enter your email" class="w-full px-3.5 py-2.5 rounded-xl border border-gray-200 text-xs focus:outline-none focus:border-black">
+            <button type="submit" class="w-full py-2.5 bg-black hover:bg-zinc-800 text-white rounded-xl text-xs font-medium transition-colors">
+              Join Gazette
+            </button>
+          </form>
+        </div>
+
+      </div>
+
+      <div class="border-t border-gray-100 pt-8 flex flex-col sm:flex-row items-center justify-between text-xs text-gray-400 gap-4">
+        <p>© 2026 Provenance Real Estate Bureau. All rights reserved.</p>
+        <div class="flex items-center gap-6">
+          <a href="#" class="hover:text-gray-700">Privacy Policy</a>
+          <a href="#" class="hover:text-gray-700">Terms of Agency</a>
+          <a href="#" class="hover:text-gray-700">Equal Housing Opportunity</a>
+        </div>
+      </div>
+
+    </div>
+  </footer>
+  </div> <!-- /#page-content-wrapper -->
+
+  <!-- Scripts with cache busters -->
+  <script src="data.js?v=7"></script>
+  <script src="app.js?v=40"></script>
+</body>
+</html>
